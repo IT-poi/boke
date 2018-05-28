@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuit.boke.article.dao.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.cuit.boke.article.beans.entry.Article" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="top" property="top" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="brief" property="brief" jdbcType="VARCHAR" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    <result column="praise_count" property="praiseCount" jdbcType="INTEGER" />
+    <result column="review_count" property="reviewCount" jdbcType="INTEGER" />
+    <result column="read_count" property="readCount" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+    <result column="label_names" property="labelNames" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+    <result column="html_content" property="htmlContent" jdbcType="LONGVARCHAR" />
+    <result column="string_content" property="stringContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    UPDATE article
+    SET delete_flag = 1
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cuit.boke.article.beans.entry.Article" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="type != null">`type`,</if>
+      <if test="status != null">`status`,</if>
+      <if test="top != null">`top`,</if>
+      <if test="title != null">title,</if>
+      <if test="brief != null">brief,</if>
+      <if test="author != null">author,</if>
+      <if test="picUrl != null">pic_url,</if>
+      <if test="praiseCount != null">praise_count,</if>
+      <if test="reviewCount != null">review_count,</if>
+      <if test="readCount != null">read_count,</if>
+      <if test="categoryId != null">category_id,</if>
+      <if test="labelNames != null">label_names,</if>
+      <if test="createBy != null">create_by,</if>
+      <if test="createAt != null">create_at,</if>
+      <if test="updateBy != null">update_by,</if>
+      <if test="updateAt != null">update_at,</if>
+      <if test="htmlContent != null">html_content,</if>
+      <if test="stringContent != null">string_content,</if>
+      <if test="deleteFlag != null">delete_flag</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="type != null">#{type,jdbcType=INTEGER},</if>
+      <if test="status != null">#{status,jdbcType=INTEGER},</if>
+      <if test="top != null">#{top,jdbcType=INTEGER},</if>
+      <if test="title != null">#{title,jdbcType=VARCHAR},</if>
+      <if test="brief != null">#{brief,jdbcType=VARCHAR},</if>
+      <if test="author != null">#{author,jdbcType=VARCHAR},</if>
+      <if test="picUrl != null">#{picUrl,jdbcType=VARCHAR},</if>
+      <if test="praiseCount != null">#{praiseCount,jdbcType=INTEGER},</if>
+      <if test="reviewCount != null">#{reviewCount,jdbcType=INTEGER},</if>
+      <if test="readCount != null">#{readCount,jdbcType=INTEGER},</if>
+      <if test="categoryId != null">#{categoryId,jdbcType=INTEGER},</if>
+      <if test="labelNames != null">#{labelNames,jdbcType=VARCHAR},</if>
+      <if test="createBy != null">#{createBy,jdbcType=INTEGER},</if>
+      <if test="createAt != null">#{createAt,jdbcType=TIMESTAMP},</if>
+      <if test="updateBy != null">#{updateBy,jdbcType=INTEGER},</if>
+      <if test="updateAt != null">#{updateAt,jdbcType=TIMESTAMP},</if>
+      <if test="htmlContent != null">#{htmlContent,jdbcType=LONGVARCHAR},</if>
+      <if test="stringContent != null">#{stringContent,jdbcType=LONGVARCHAR},</if>
+      <if test="deleteFlag != null">0</if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cuit.boke.article.beans.entry.Article" >
+    update article
+    <set>
+      <if test="type != null">`type` = #{type,jdbcType=INTEGER},</if>
+      <if test="status != null">`status` = #{status,jdbcType=INTEGER},</if>
+      <if test="top != null">`top` = #{top,jdbcType=INTEGER},</if>
+      <if test="title != null">title = #{title,jdbcType=VARCHAR},</if>
+      <if test="brief != null">brief = #{brief,jdbcType=VARCHAR},</if>
+      <if test="author != null">author = #{author,jdbcType=VARCHAR},</if>
+      <if test="picUrl != null">pic_url = #{picUrl,jdbcType=VARCHAR},</if>
+      <if test="praiseCount != null">praise_count = #{praiseCount,jdbcType=INTEGER},</if>
+      <if test="reviewCount != null">review_count = #{reviewCount,jdbcType=INTEGER},</if>
+      <if test="readCount != null">read_count = #{readCount,jdbcType=INTEGER},</if>
+      <if test="categoryId != null">category_id = #{categoryId,jdbcType=INTEGER},</if>
+      <if test="labelNames != null">label_names = #{labelNames,jdbcType=VARCHAR},</if>
+      <if test="createBy != null">create_by = #{createBy,jdbcType=INTEGER},</if>
+      <if test="createAt != null">create_at = #{createAt,jdbcType=TIMESTAMP},</if>
+      <if test="updateBy != null">update_by = #{updateBy,jdbcType=INTEGER},</if>
+      <if test="updateAt != null">update_at = #{updateAt,jdbcType=TIMESTAMP},</if>
+      <if test="htmlContent != null">html_content = #{htmlContent,jdbcType=LONGVARCHAR},</if>
+      <if test="stringContent != null">string_content = #{stringContent,jdbcType=LONGVARCHAR}</if>
+    </set>
+    where id = #{id,jdbcType=INTEGER} and delete_flag = 0
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, `type`, `status`, `top`, title, author, brief, pic_url, praise_count, 
+    review_count, read_count, category_id, label_names, create_by, create_at, update_by,
+    update_at, delete_flag, html_content, string_content
+    from article
+    where delete_flag = 0 AND id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, `type`, `status`, `top`, title, author, brief, pic_url, praise_count, 
+    review_count, category_id, read_count, label_names, create_by, create_at, update_by,
+    update_at, delete_flag, html_content, string_content
+    from article
+    WHERE delete_flag = 0
+  </select>
+  <select id="listBy" resultMap="BaseResultMap" parameterType="map">
+    select
+      id,
+      `type`,
+      `status`,
+      `top`,
+      title,
+      author,
+      category_id,
+      brief,
+      pic_url,
+      praise_count,
+      review_count,
+      read_count,
+      label_names,
+      create_by,
+      create_at,
+      update_by,
+      update_at,
+      delete_flag
+    from article
+    <where>
+      delete_flag = 0
+      <if test="id != null">and id = #{id}</if>
+      <if test="type != null">and type = #{type}</if>
+      <if test="status != null">and  `status` = #{status}</if>
+      <if test="top != null">and top = #{top}</if>
+      <if test="title != null">and title = #{title}</if>
+      <if test="author != null">and author = #{author}</if>
+      <if test="brief != null">and brief = #{brief}</if>
+      <if test="picUrl != null">and pic_url = #{picUrl}</if>
+      <if test="praiseCount != null">and praise_count = #{praiseCount}</if>
+      <if test="reviewCount != null">and review_count = #{reviewCount}</if>
+      <if test="readCount != null">and read_count = #{readCount}</if>
+      <if test="labelNames != null">and label_names = #{labelNames}</if>
+      <if test="createBy != null">and create_by = #{createBy}</if>
+    </where>
+  </select>
+
+  <select id="listWithOther" resultType="map" parameterType="map">
+    SELECT
+      a.id,
+      a.`type`,
+      a.`status`,
+      a.`top`,
+      a.title,
+      a.author,
+      a.category_id as categoryId,
+      a.brief,
+      a.pic_url as picUrl,
+      a.praise_count as praiseCount,
+      a.review_count as reviewCount,
+      a.read_count as readCount,
+      a.label_names as labelNames,
+      a.create_by as createBy,
+      a.create_at as createAt,
+      a.update_by as updateBy,
+      a.update_at as updateAt,
+      c.`name` as categoryName,
+      c.alias as alias
+    FROM
+      article AS a
+    LEFT JOIN category as c ON a.category_id = c.id AND c.delete_flag = 0
+    <where>
+      a.delete_flag = 0
+      <if test="id != null">and a.id = #{id}</if>
+      <if test="type != null">and a.type = #{type}</if>
+      <if test="status != null">and  a.`status` = #{status}</if>
+      <if test="top != null">and a.top = #{top}</if>
+      <if test="categoryId != null">and a.category_id = #{categoryId}</if>
+      <if test="alias != null">and c.alias = #{alias}</if>
+      <if test="title != null">and a.title = #{title}</if>
+      <if test="author != null">and a.author = #{author}</if>
+      <if test="brief != null">and a.brief = #{brief}</if>
+      <if test="picUrl != null">and a.pic_url = #{picUrl}</if>
+      <if test="praiseCount != null">and a.praise_count = #{praiseCount}</if>
+      <if test="reviewCount != null">and a.review_count = #{reviewCount}</if>
+      <if test="readCount != null">and a.read_count = #{readCount}</if>
+      <if test="labelNames != null">and a.label_names = #{labelNames}</if>
+      <if test="createBy != null">and a.create_by = #{createBy}</if>
+    </where>
+  </select>
+
+  <update id="plusPraise" parameterType="int">
+    UPDATE article
+      SET praise_count = praise_count + 1
+    WHERE delete_flag = 0 AND id = #{articleId}
+  </update>
+
+  <update id="plusReadCount" parameterType="int">
+    UPDATE article
+    SET read_count = read_count + 1
+    WHERE delete_flag = 0 AND id = #{articleId}
+  </update>
+
+  <update id="plusReviewCount" parameterType="int">
+    UPDATE article
+    SET review_count = review_count + 1
+    WHERE delete_flag = 0 AND id = #{articleId}
+  </update>
+  <update id="minusReviewCount" parameterType="int">
+    UPDATE article
+    SET review_count = review_count - 1
+    WHERE delete_flag = 0 AND id = #{articleId}
+  </update>
+</mapper>

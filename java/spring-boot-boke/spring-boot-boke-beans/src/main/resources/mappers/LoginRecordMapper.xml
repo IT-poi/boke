@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuit.boke.dao.LoginRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.cuit.boke.beans.entry.LoginRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="login_user_id" property="loginUserId" jdbcType="INTEGER" />
+    <result column="login_user_name" property="loginUserName" jdbcType="VARCHAR" />
+    <result column="login_address" property="loginAddress" jdbcType="VARCHAR" />
+    <result column="login_time" property="loginTime" jdbcType="TIMESTAMP"/>
+    <result column="login_ip" property="loginIp" jdbcType="VARCHAR" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    UPDATE login_record
+    set delete_flag = 1
+    WHERE id = #{id,jdbcType=INTEGER};
+  </delete>
+  <insert id="insert" parameterType="com.cuit.boke.beans.entry.LoginRecord" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into login_record (login_user_id, login_user_name, login_address, 
+      login_time, login_ip, delete_flag
+      )
+    values (#{loginUserId,jdbcType=INTEGER}, #{loginUserName,jdbcType=VARCHAR}, #{loginAddress,jdbcType=VARCHAR},
+      #{loginTime,jdbcType=TIMESTAMP}, #{loginIp,jdbcType=VARCHAR}, 0
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cuit.boke.beans.entry.LoginRecord" >
+    update login_record
+    <set>
+      <if test="loginUserId != null">login_user_id = #{loginUserId,jdbcType=INTEGER},</if>
+      <if test="loginUserName != null">login_user_name = #{loginUserName,jdbcType=VARCHAR},</if>
+      <if test="loginAddress != null">login_address = #{loginAddress,jdbcType=VARCHAR},</if>
+      <if test="loginTime != null">login_time = #{loginTime,jdbcType=TIMESTAMP},</if>
+      <if test="loginIp != null">login_ip = #{loginIp,jdbcType=VARCHAR}</if>
+    </set>
+    where delete_flag = 0 and id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, login_user_id, login_user_name, login_address, login_time, login_ip, delete_flag
+    from login_record
+    where delete_flag = 0 AND id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, login_user_id, login_user_name, login_address, login_time, login_ip, delete_flag
+    from login_record
+    WHERE delete_flag = 0
+  </select>
+
+  <select id="listBy" resultMap="BaseResultMap" parameterType="map">
+    select id, login_user_id, login_user_name, login_address, login_time, login_ip, delete_flag
+    from login_record
+    <where>
+      delete_flag = 0
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="loginUserId != null">
+        and login_user_id = #{loginUserId}
+      </if>
+      <if test="loginUserName != null">
+        and login_user_name #{loginUserName}
+      </if>
+      <if test="loginAddress != null">
+        and login_address = #{loginAddress}
+      </if>
+      <if test="startTime != null">
+        and <![CDATA[
+          login_time > #{startTime}
+        ]]>
+      </if>
+      <if test="endTime != null">
+        and <![CDATA[
+          login_time < #{endTime}
+        ]]>
+      </if>
+      <if test="loginTime != null">
+        and login_time = #{loginTime}
+      </if>
+      <if test="loginIp != null">
+        and login_ip = #{loginIp}
+      </if>
+    </where>
+  </select>
+  <select id="getLoginStatusByUserId" resultType="map" parameterType="java.lang.Integer">
+    SELECT
+      lr.id,
+      login_user_id AS userId,
+      su.user_nick_name AS userName,
+      login_address AS loginAddress,
+      login_time AS loginTime,
+      login_ip AS loginIp,
+      total
+    FROM
+      login_record AS lr
+      INNER JOIN (
+        SELECT
+         COUNT(1) AS total,
+         MAX(login_time) AS lastLoginTime
+        FROM
+         login_record AS lr
+        WHERE
+         login_user_id = #{userId} AND delete_flag = 0
+        ) AS ilr ON ilr.lastLoginTime = lr.login_time
+      INNER JOIN sys_user as su ON su.delete_flag = 0 and su.id = lr.login_user_id
+    WHERE
+      lr.delete_flag = 0 AND login_user_id = #{userId}
+    ORDER BY lr.id DESC
+    LIMIT 1
+  </select>
+
+</mapper>

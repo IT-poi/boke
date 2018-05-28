@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+    <!-- Basic Page Needs
+  ================================================== -->
+	<meta charset="utf-8">
+	<title>Fool的个人博客 - 学如逆水行舟，不进则退</title>
+	<meta name="description" content="Free Responsive Html5 Css3 Templates ">
+	<meta name="author" content="">
+	
+    <!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <!-- CSS
+  ================================================== -->
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  	<link rel="stylesheet" href="css/zerogrid.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/menu.css">
+	<link rel="stylesheet" href="css/responsiveslides.css">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="lib/toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="lib/editor.md/css/editormd.css" />
+    <!--<script src="js/jquery183.min.js"></script>-->
+    <!--<script src="js/responsiveslides.min.js"></script>-->
+	<!--<script src="lib/jquery-2.1.4.min.js"></script>-->
+	<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!--<script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.js"></script>-->
+	<script src="lib/angular/angular.min.js"></script>
+	<script src="lib/angular/angular-ui-router.min.js"></script>
+	<script src="lib/angular/angular-md5.min.js"></script>
+	<script src="lib/angular/angular-animate.js"></script>
+	<script src="lib/angular/angular-sanitize.min.js"></script>
+	<script src="lib/angular/ui-bootstrap-tpls-2.5.0.js"></script>
+	<!--[if lt IE 8]>
+       <div style=' clear: both; text-align:center; position: relative;'>
+         <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+           <img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." />
+        </a>
+      </div>
+    <![endif]-->
+    <!--[if lt IE 9]>
+		<script src="js/html5.js"></script>
+		<script src="js/css3-mediaqueries.js"></script>
+	<![endif]-->
+    
+</head>
+<body ng-app="blog" ng-controller="appController" ng-cloak style="overflow-x: hidden">
+<div class="wrap-body">
+
+<header>
+	<div class="top-header">
+		<div class="zerogrid">
+			<nav id="menu-wrap"><div id="menu-trigger">Menu</div>    
+				<ul id="menu" style="display: none;">
+					<li><a href="#/home">Home</a></li>
+					<li>
+						<a href="#">技术</a>
+						<ul>
+							<li ng-repeat="x in technologys">
+								<a href="#/category/{{x.alias}}">{{x.name}}</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">生活</a>
+						<ul>
+							<li ng-repeat="x in lifes">
+								<a href="#/category/{{x.alias}}">{{x.name}}</a>
+							</li>
+						</ul>
+					</li>
+					<li><a href="#/about">关于</a></li>
+					<li><a href="#/contact">留言</a></li>
+					<li style="float:right !important" >
+						<form id="search" class="f-right">
+							<input ng-keydown="search($event)" ng-model="keywords" name="q" type="text" size="40" placeholder="Search..." />
+						</form>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<div class="clearfix">
+		<div class="wrap-header">
+			<div class="row">
+				<div class="col-full t-center">
+					<div class="wrap-col">
+						<h2><a href="#">FOOL的技术博客</a></h2>
+						<div class="tagline">学如逆水行舟，不进则退！</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<section id="container">
+	<div class="wrap-container" style="padding-bottom: 50px">
+		<div ui-view></div>
+	</div>
+</section>
+<footer>
+	<div class="zerogrid">
+		<div class="wrap-footer t-center">
+			<div class="row">
+				<div class="full">
+					<ul class="quick-link">
+						<li><a href=""><i class="fa fa-facebook"></i></a></li>
+						<li><a href=""><i class="fa fa-twitter"></i></a></li>
+						<li><a href=""><i class="fa fa-youtube"></i></a></li>
+						<li><a href=""><i class="fa fa-google-plus"></i></a></li>
+						<li><a href=""><i class="fa fa-instagram"></i></a></li>
+						<li><a href=""><i class="fa fa-github"></i></a></li>
+					</ul>
+					<div class="copy-right">
+						<p>Copyright 20xx - More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+
+<!-- plug start -->
+<script src="lib/toastr/toastr.min.js" type="text/javascript"></script>
+<script src="js/ui-toastr.js" type="text/javascript"></script>
+<!-- plug end -->
+
+
+<!-- Angular start -->
+<script src="js/my.js"></script>
+<script src="com/blog/ng-app.js"></script>
+<script src="com/blog/ng-config.js"></script>
+<script src="com/blog/directive/pagination.js"></script>
+<script src="com/blog/controller/article/articleController.js"></script>
+<script src="com/blog/controller/article/search-controller.js"></script>
+<script src="com/blog/controller/article/article-detail.js"></script>
+<script src="com/blog/controller/contact/contact.js"></script>
+<!--<script src="controller/article/article.js"></script>-->
+<!--<script src="controller/article/article-detail.js"></script>-->
+<!--<script src="controller/category/category.js"></script>-->
+<!--<script src="controller/category/category-update.js"></script>-->
+<!--<script src="controller/loginlog/loginlog.js"></script>-->
+<!--<script src="modal/article-publish-modal.js"></script>-->
+<!-- Angular end -->
+
+
+<script type="text/javascript">
+    $(function() {
+//		if ($.browser.msie && $.browser.version.substr(0,1)<7)
+//		{
+//		$('li').has('ul').mouseover(function(){
+//			$(this).children('ul').css('visibility','visible');
+//			}).mouseout(function(){
+//			$(this).children('ul').css('visibility','hidden');
+//			})
+//		}
+
+		/* Mobile */
+		$("#menu-trigger").on("click", function(){
+			$("#menu").slideToggle();
+		});
+
+		// iPad
+		var isiPad = navigator.userAgent.match(/iPad/i) != null;
+		if (isiPad) $('#menu ul').addClass('no-transition');      
+    });          
+</script>
+
+</div>
+</body>
+</html>

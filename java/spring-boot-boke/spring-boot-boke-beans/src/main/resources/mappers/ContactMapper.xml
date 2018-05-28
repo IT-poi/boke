@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuit.boke.contact.dao.ContactMapper" >
+  <resultMap id="BaseResultMap" type="com.cuit.boke.contact.beans.entry.Contact" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="subject" property="subject" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="portrait_url" property="portraitUrl" jdbcType="VARCHAR" />
+    <result column="ignore" property="ignore" jdbcType="INTEGER" />
+    <result column="replay" property="replay" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_user_name" property="updateUserName" jdbcType="VARCHAR" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    UPDATE contact
+    SET delete_flag = 1
+    where id = #{id,jdbcType=INTEGER};
+  </update>
+  <insert id="insert" parameterType="com.cuit.boke.contact.beans.entry.Contact" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into contact (subject, content, user_id, name,
+      email, portrait_url, `ignore`, replay, create_by,
+      create_user_name, create_at, update_by, 
+      update_user_name, update_at, delete_flag
+      )
+    values (#{subject,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+      #{email,jdbcType=VARCHAR}, #{portraitUrl,jdbcType=VARCHAR}, #{ignore,jdbcType=INTEGER}, #{replay,jdbcType=INTEGER},
+      #{createBy,jdbcType=INTEGER}, #{createUserName,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER},
+      #{updateUserName,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}, 0
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cuit.boke.contact.beans.entry.Contact" >
+    update contact
+    <set>
+      <if test="subject != null and subject != ''">subject = #{subject,jdbcType=VARCHAR},</if>
+      <if test="content != null and content != ''">content = #{content,jdbcType=VARCHAR},</if>
+      <if test="userId != null">user_id = #{userId,jdbcType=INTEGER},</if>
+      <if test="name != null">name = #{name,jdbcType=INTEGER},</if>
+      <if test="email != null">email = #{email,jdbcType=VARCHAR},</if>
+      <if test="portraitUrl != null">portrait_url = #{portraitUrl,jdbcType=VARCHAR},</if>
+      <if test="ignore != null">`ignore` = #{ignore,jdbcType=INTEGER},</if>
+      <if test="replay != null">replay = #{replay,jdbcType=INTEGER},</if>
+      <if test="updateBy != null">update_by = #{updateBy,jdbcType=INTEGER},</if>
+      <if test="updateAt != null">update_at = #{updateAt,jdbcType=TIMESTAMP},</if>
+    </set>
+    where id = #{id,jdbcType=INTEGER} and delete_flag = 0
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, subject, content, user_id, `name`, email, portrait_url, `ignore`, replay, create_by, create_user_name,
+    create_at, update_by, update_user_name, update_at, delete_flag
+    from contact
+    where id = #{id,jdbcType=INTEGER} and delete_flag = 0
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, subject, content, user_id, `name`, email, portrait_url, `ignore`, replay, create_by, create_user_name,
+    create_at, update_by, update_user_name, update_at, delete_flag
+    from contact
+    WHERE delete_flag = 0
+  </select>
+
+  <select id="findBy" resultMap="BaseResultMap" parameterType="map">
+    select id, subject, content, user_id, `name`, email, portrait_url, `ignore`, replay, create_by, create_user_name,
+    create_at, update_by, update_user_name, update_at, delete_flag
+    from contact
+    <where>
+      delete_flag = 0
+      <if test="replay!=null"> and replay = #{replay}</if>
+      <if test="ignore!=null"> and `ignore` = #{ignore}</if>
+    </where>
+  </select>
+
+  <update id="ignore" parameterType="java.lang.Integer" >
+    UPDATE contact
+    SET `ignore` = 1
+    where id = #{id,jdbcType=INTEGER} and delete_flag = 0;
+  </update>
+</mapper>

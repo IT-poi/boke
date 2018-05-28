@@ -1,0 +1,219 @@
+<div class="page-bar" style="padding-top: 5px; padding-bottom: 5px; margin-left: -20px; margin-right: -20px; margin-top: -25px; background: #FFFFFF; border-bottom: solid red 1px">
+  <ul class="page-breadcrumb">
+    <li>
+      <a href="#/system">Home</a>
+      <i class="fa fa-circle"></i>
+    </li>
+    <li>
+      <a href="#/article/list">文章管理</a>
+    </li>
+  </ul>
+</div>
+<div>
+  <div class="margin-left">
+    <form action="" method="post" >
+      <div class="row">
+        <div class="col-md-12">
+          <!-- BEGIN EXAMPLE TABLE PORTLET-->
+          <div class="portlet light bordered">
+            <div class="portlet-title">
+              <!--<div class="caption font-dark">-->
+                <!--<i class="icon-settings font-dark"></i>-->
+                <!--<span class="caption-subject bold uppercase"> 我的文章 </span>-->
+              <!--</div>-->
+              <div class="caption">
+                <i class="glyphicon icon-book"></i>
+                <span class="caption-subject font-green sbold uppercase">我的文章</span>
+              </div>
+            </div>
+            <div class="portlet-body">
+              <div class="table-toolbar">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="btn-group">
+                      <a href="#/article/add" class="btn sbold green"> Add New
+                        <i class="fa fa-plus"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="btn-group pull-right">
+                      <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown"> 分类查看
+                        <i class="fa fa-angle-down"></i>
+                      </button>
+                      <ul class="dropdown-menu pull-right">
+                        <li >
+                          <a href="javascript:;" ng-click="list()">
+                            <i class="fa fa-print"></i> 全部 </a>
+                        </li>
+                        <li >
+                          <a href="javascript:;" ng-click="list(0)">
+                            <i class="fa fa-print"></i> 草稿 </a>
+                        </li>
+                        <li>
+                          <a href="javascript:;" ng-click="list(1)">
+                            <i class="fa fa-file-pdf-o"></i> 已发布 </a>
+                        </li>
+                        <li>
+                          <a href="javascript:;" ng-click="list(2)">
+                            <i class="fa fa-file-excel-o"></i> 私密 </a>
+                        </li>
+                        <li>
+                          <a href="javascript:;" ng-click="list(3)">
+                            <i class="fa fa-file-excel-o"></i> 回收站 </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-striped table-bordered table-hover table-checkable order-column" id="table">
+                <thead>
+                <tr>
+                  <th>
+                    <input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" /> </th>
+                  <th class="center"> <span class="glyphicon glyphicon-file"></span> <span class="visible-lg">文章标题</span> </th>
+                  <th class="center"> <span class="glyphicon glyphicon-list"></span> <span class="visible-lg">文章分类</span> </th>
+                  <th class="center"> <span class="glyphicon glyphicon-tag"></span> <span class="visible-lg">标签</span> </th>
+                  <th class="center"> <span class="glyphicon icon-eye-open"></span> <span class="visible-lg">浏览量</span> </th>
+                  <th class="center"> <span class="glyphicon glyphicon-comment"></span> <span class="visible-lg">评论</span> </th>
+                  <th class="center"> <span class="glyphicon glyphicon-time"></span> <span class="visible-lg">日期</span> </th>
+                  <th class="center"> <span class="glyphicon icon-circle-blank"></span> <span class="visible-lg">状态</span> </th>
+                  <th class="center"> <span class="glyphicon glyphicon-pencil"></span> <span class="visible-lg">操作</span> </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="odd gradeX" ng-repeat="x in articles">
+                  <td>
+                    <input type="checkbox" class="checkboxes" value="1" /> </td>
+                  <td> {{x.title}} </td>
+                  <td class="center">
+                    <a href="javascript:;" ng-click="categoryDetail(x.alias)"> {{x.categoryName}} </a>
+                  </td>
+                  <td class="center"> {{x.labelNames}} </td>
+                  <td class="center"> {{x.readCount}} </td>
+                  <td class="center"> {{x.reviewCount}} </td>
+                  <td class="center"> {{x.createAt | date:'yyyy-MM-dd HH:mm:ss'}} </td>
+                  <td class="center">
+                    <span class="label label-sm" style="padding-left: 10px; padding-right: 10px" ng-class="{0:'label-warning', 1:'label-success', 2:'label-info', 3:'label-danger'}[x.status]"> {{x.status | articleStatus}} </span>
+                  </td>
+                  <td class="center">
+                    <span class="center"><a href="#/article/{{x.id}}">修改</a></span> <span class="center"><a href="javascript:;">删除</a></span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <s-pagination conf="articleConfig"></s-pagination>
+            </div>
+          </div>
+          <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+      </div>
+
+
+      <!--<ol class="breadcrumb">
+        <li><a href="add-article.html">增加文章</a></li>
+      </ol>
+      <h1 class="page-header">管理 <span class="badge">7</span></h1>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">选择</span></th>
+              <th><span class="glyphicon glyphicon-file"></span> <span class="visible-lg">标题</span></th>
+              <th><span class="glyphicon glyphicon-list"></span> <span class="visible-lg">栏目</span></th>
+              <th class="hidden-sm"><span class="glyphicon glyphicon-tag"></span> <span class="visible-lg">标签</span></th>
+              <th class="hidden-sm"><span class="glyphicon glyphicon-comment"></span> <span class="visible-lg">评论</span></th>
+              <th><span class="glyphicon glyphicon-time"></span> <span class="visible-lg">日期</span></th>
+              <th><span class="glyphicon glyphicon-pencil"></span> <span class="visible-lg">操作</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>
+              <td class="article-title">这是测试的文章标题这是测试的文章标题这是测试的文章标题这是测试的文章标题</td>
+              <td>这个是栏目</td>
+              <td class="hidden-sm">PHP、JavaScript</td>
+              <td class="hidden-sm">0</td>
+              <td>2015-12-03</td>
+              <td><a href="#/article/1">修改</a> <a rel="6">删除</a></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>
+              <td class="article-title">这是测试的文章标题这是测试的文章标题这是测试的文章标题这是测试的文章标题</td>
+              <td>这个是栏目</td>
+              <td class="hidden-sm">PHP、JavaScript</td>
+              <td class="hidden-sm">0</td>
+              <td>2015-12-03</td>
+              <td><a href="">修改</a> <a rel="6">删除</a></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>
+              <td class="article-title">这是测试的文章标题这是测试的文章标题这是测试的文章标题这是测试的文章标题</td>
+              <td>这个是栏目</td>
+              <td class="hidden-sm">PHP、JavaScript</td>
+              <td class="hidden-sm">0</td>
+              <td>2015-12-03</td>
+              <td><a href="">修改</a> <a rel="6">删除</a></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>
+              <td class="article-title">这是测试的文章标题这是测试的文章标题这是测试的文章标题这是测试的文章标题</td>
+              <td>这个是栏目</td>
+              <td class="hidden-sm">PHP、JavaScript</td>
+              <td class="hidden-sm">0</td>
+              <td>2015-12-03</td>
+              <td><a href="">修改</a> <a rel="6">删除</a></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>
+              <td class="article-title">这是测试的文章标题这是测试的文章标题这是测试的文章标题这是测试的文章标题</td>
+              <td>这个是栏目</td>
+              <td class="hidden-sm">PHP、JavaScript</td>
+              <td class="hidden-sm">0</td>
+              <td>2015-12-03</td>
+              <td><a href="">修改</a> <a rel="6">删除</a></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>
+              <td class="article-title">这是测试的文章标题这是测试的文章标题这是测试的文章标题这是测试的文章标题</td>
+              <td>这个是栏目</td>
+              <td class="hidden-sm">PHP、JavaScript</td>
+              <td class="hidden-sm">0</td>
+              <td>2015-12-03</td>
+              <td><a href="">修改</a> <a rel="6">删除</a></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>
+              <td class="article-title">这是测试的文章标题这是测试的文章标题这是测试的文章标题这是测试的文章标题</td>
+              <td>这个是栏目</td>
+              <td class="hidden-sm">PHP、JavaScript</td>
+              <td class="hidden-sm">0</td>
+              <td>2015-12-03</td>
+              <td><a href="">修改</a> <a rel="6">删除</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="message_footer">
+        <nav>
+          <div class="btn-toolbar operation" role="toolbar">
+            <div class="btn-group" role="group"> <a class="btn btn-default" onClick="select()">全选</a> <a class="btn btn-default" onClick="reverse()">反选</a> <a class="btn btn-default" onClick="noselect()">不选</a> </div>
+            <div class="btn-group" role="group">
+              <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="删除全部选中" name="checkbox_delete">删除</button>
+            </div>
+          </div>
+          <ul class="pagination pagenav">
+            <li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a> </li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a> </li>
+          </ul>
+        </nav>
+      </footer>-->
+    </form>
+  </div>
+</div>

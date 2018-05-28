@@ -1,0 +1,189 @@
+<link rel="stylesheet" href="css/review.css">
+<style>
+.review{
+    padding: 12px 20px 10px;
+}
+.review:after {
+    display: block;
+    border-bottom: 1px solid #BCBCBC;
+    content: "";
+}
+</style>
+<div class="zerogrid" style="border-top: 1px solid #ccc;">
+    <div class="wrap-container clearfix">
+        <div class="row">
+            <div id="main-content" class="col-2-3">
+                <div class="wrap-content">
+                    <article>
+                        <div class="art-header">
+                            <div class="entry-title">
+                                <a href="javascript:;">{{article.title}}</a>
+                            </div>
+                            <span>发布于 {{article.createAt | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                            <span> | 浏览量:{{article.readCount}}</span>
+                            <span> | 评论:{{article.reviewCount}}</span>
+                        </div>
+                        <img src="{{article.picUrl}}"/>
+                        <div class="art-content markdown-body" id="article_content"></div>
+                    </article>
+                    <div style="margin-top: 60px;">
+                        <div class="contact">
+                            <h3>发表评论</h3>
+                            <p> 电子邮件不会被公开，用于作者向你回复消息时，通过邮箱通知 </p>
+                            <div id="contact_form">
+                                <form name="form1" id="ff">
+                                    <label class="row">
+                                        <div class="col-1-2">
+                                            <div class="wrap-col">
+                                                <input ng-model="name" type="text" name="name" id="name" placeholder="Enter name" required="required" />
+                                            </div>
+                                        </div>
+                                        <div class="col-1-2">
+                                            <div class="wrap-col">
+                                                <input ng-model="email" type="email" name="email" id="email" placeholder="Enter email" required="required" />
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label class="row" style="text-align: center">
+                                        <div class="col-full">
+                                            <div class="wrap-col">
+                                                <input ng-model="website" type="text" name="website" id="website" placeholder="个人主页(非必填)" />
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label class="row">
+                                        <div class="wrap-col">
+														<textarea ng-model="message" name="message" id="message" class="form-control" rows="4" cols="25" required="required"
+                                                                  placeholder="Message"></textarea>
+                                        </div>
+                                    </label>
+                                    <button class="btn btn-success btn-block" ng-click="submit()"> 发表评论 </button>
+                                </form>
+                            </div>
+                        </div>
+                        <h4 class="section-title">
+                            <span ng-show="reviewList.length>0">{{reviewConfig.totalItems}} 条评论</span>
+                        </h4>
+                        <div  ng-hide="reviewList.length>0">
+                            <div class="mess_con tishi">
+                                <p>暂时还没有评论...</p>
+                            </div>
+                        </div>
+                        <div ng-repeat="x in reviewList" >
+                            <div class="review">
+                                <div class="mess_title">
+                                    <div class="mess_img ">
+                                        <img src="images/14.jpg">
+                                    </div>
+                                    <a href="https://{{x.portraitUrl}}" target="_blank"><span class="mess_name">{{x.userName}}</span></a>
+                                    <span ng-show="x.parentId" style="color: #8590a6;"> 回复</span>
+                                    <a ng-show="x.parentId" href="https://{{x.portraitUrl}}" target="_blank"><span class="mess_name">{{x.parentName}}</span></a>
+                                    <span class="mess_time">评论于: {{x.createAt | date:"yyyy-MM-dd HH:mm:ss"}}</span>
+                                </div>
+                                <div class="mess_con">
+                                    <p>{{x.content}}</p>
+                                    <p ng-show="replayId != x.id">
+                                        <a href="javascript:;" ng-click="praise(x.id)" class="parise"> <i class="fa fa-thumbs-up" aria-hidden="true">{{x.praiseCount}}</i></a>
+                                        <span style="padding: 5px"></span>
+                                        <a href="javascript:;" ng-click="replayId = x.id"><i class="fa fa-reply" aria-hidden="true" style="color: #8590a6;">回复</i></a>
+                                    </p>
+                                    <div ng-show="replayId == x.id">
+                                        <textarea ng-model="replayContent" type="text" placeholder="回复 {{x.userName}}" class="form-control"></textarea>
+                                        <div style="text-align: right; margin: 10px 0px 10px 0px">
+                                            <a class="btn" href="javascript:;" ng-click="replayId = null" style="color: #8590a6;">取消</a>
+                                            <a class="btn btn-primary" href="javascript:;" ng-click="replayContent = replay(x.id, replayContent) ? '' : replayContent">评论</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <s-pagination conf="reviewConfig"></s-pagination>
+                    </div>
+                </div>
+            </div>
+            <div id="sidebar" class="col-1-3" style="padding-left: 30px">
+
+                <!---- Start Widget ---->
+                <div class="widget wid-follow">
+                    <div class="wid-header">
+                        <h5 >FOLLOW ME</h5>
+                    </div>
+                    <div class="wid-content">
+                        <ul class="quick-link">
+                            <li style="padding-left: 0px"><a href=""><i class="fa fa-facebook"></i></a></li>
+                            <li><a href=""><i class="fa fa-twitter"></i></a></li>
+                            <li><a href=""><i class="fa fa-youtube"></i></a></li>
+                            <li><a href=""><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href=""><i class="fa fa-instagram"></i></a></li>
+                            <li><a href=""><i class="fa fa-github"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!---- Start Widget ---->
+                <div class="widget wid-about">
+                    <div class="wid-header">
+                        <h5>ABOUT ME</h5>
+                    </div>
+                    <div class="wid-content">
+                        <p>姓名·尹健康</p>
+                        <p>性别·男</p>
+                        <p>毕业院校·成都信息工程大学</p>
+                        <p>邮箱·inori.yinjk@gmail.com</p>
+                        <p>学如逆水行舟，不进则退！</p>
+                    </div>
+                </div>
+                <!---- Start Widget ---->
+                <div class="widget wid-post">
+                    <div class="wid-header" style="margin-bottom: 0px">
+                        <h5 class="section-title" style="text-align: center"><span>最近发布</span></h5>
+                    </div>
+                    <div class="wid-content">
+                        <div ng-repeat="x in lastArticles" style="margin-top: 20px">
+                            <a href="#/article/{{x.id}}">
+                                <div>{{x.title}}</div>
+                                <div>
+                                    <span>浏览量:{{x.readCount}}</span>
+                                    <span>| 评论:{{x.reviewCount}}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!---- Start Widget ---->
+                <div class="widget wid-post">
+                    <div class="wid-header" style="margin-bottom: 0px">
+                        <h5 class="section-title" style="text-align: center"><span>阅读排行</span></h5>
+                    </div>
+                    <div class="wid-content">
+                        <div ng-repeat="x in lastArticles" style="margin-top: 20px">
+                            <a href="#/article/{{x.id}}">
+                                <div>{{x.title}}</div>
+                                <div>
+                                    <span>浏览量:{{x.readCount}}</span>
+                                    <span>| 评论:{{x.reviewCount}}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget wid-post">
+                    <div class="wid-header" style="margin-bottom: 0px">
+                        <h5 class="section-title" style="text-align: center"><span>文章归档</span></h5>
+                    </div>
+                    <div class="wid-content">
+                        <div ng-repeat="x in lastArticles" style="margin-top: 20px">
+                            <a href="#/article/{{x.id}}">
+                                <div>{{x.title}}</div>
+                                <div>
+                                    <span>浏览量:{{x.readCount}}</span>
+                                    <span>| 评论:{{x.reviewCount}}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,114 @@
+<div class="page-bar" style="padding-top: 5px; padding-bottom: 5px; margin-left: -20px; margin-right: -20px; margin-top: -25px; background: #FFFFFF; border-bottom: solid red 1px">
+  <ul class="page-breadcrumb">
+    <li>
+      <a href="#/system">Home</a>
+      <i class="fa fa-circle"></i>
+    </li>
+    <li>
+      <a href="#/apilog">访问日志</a>
+    </li>
+  </ul>
+</div>
+<div data-ng-init="init()">
+
+  <div class="portlet light bordered">
+    <div class="portlet-title">
+      <!--<div class="caption font-dark">-->
+      <!--<i class="icon-settings font-dark"></i>-->
+      <!--<span class="caption-subject bold uppercase"> 我的文章 </span>-->
+      <!--</div>-->
+      <div class="caption">
+        <i class="glyphicon icon-book"></i>
+        <span class="caption-subject font-green sbold uppercase">访问日志</span>
+      </div>
+    </div>
+    <div class="portlet-body">
+      <div class="table-toolbar">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="btn-group">
+              <a href="javascript:;" class="btn sbold green" ng-click="selectAll()" >
+                <i class="fa fa-search"></i> <span>查询</span>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="btn-group pull-right">
+              <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown"> Tools
+                <i class="fa fa-angle-down"></i>
+              </button>
+              <ul class="dropdown-menu pull-right">
+                <li >
+                  <a href="javascript:;" ng-click="deleteMore()">
+                    <i class="fa fa-print"></i> 删除 </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-striped table-bordered table-hover table-checkable order-column" id="table">
+        <thead>
+        <tr>
+          <th>
+            <input type="checkbox" ng-init="checkAll = false" ng-model="checkAll" ng-click="selectAll()" class="group-checkable"/> </th>
+          <th class="center"><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">ID</span></th>
+          <th class="center"><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">请求方式</span></th>
+          <th class="center"><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">描述</span></th>
+          <th class="center"><span class="glyphicon glyphicon-adjust"></span> <span class="visible-lg">请求者IP</span></th>
+          <th class="center"><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">请求URL</span></th>
+          <th class="center"><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">请求的APi</span></th>
+          <th class="center"><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">请求参数</span></th>
+          <th class="center"><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">异常信息</span></th>
+          <th class="center"><span class="glyphicon glyphicon-time"></span> <span class="visible-lg">日志时间</span></th>
+          <th class="center"><span class="glyphicon glyphicon-remove"></span> <span class="visible-lg">删除</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="odd gradeX" ng-repeat="x in apilogs">
+          <td>
+            <input type="checkbox" class="checkboxes" value="{{x.id}}" name="checkbox[]" /> </td>
+          <td class="center"> {{x.id}} </td>
+          <td class="center">{{x.httpMethod}}</td>
+          <td class="center">{{x.desc}}</td>
+          <td class="center">{{x.ip}}</td>
+          <td class="center" data-toggle="tooltip" data-placement="top" title="{{x.url}}">{{x.url | characters:20}}</td>
+          <td class="center" style="width:10%;"> {{x.clazz}}.{{x.method}}() </td>
+          <td class="center" style="width:10%;" data-toggle="tooltip" data-placement="top" title="{{x.args}}"> {{x.args | characters:20}} </td>
+          <td class="center" data-toggle="tooltip" data-placement="top" title="{{x.error}}"> {{x.error | characters:20}}</td>
+          <td class="center" style="width:10%;"> {{x.createTime | date:'yyyy-MM-dd HH:mm:ss'}} </td>
+          <td class="center">
+            <span class="center"><a href="javascript:;" ng-click="delete(x.id)">删除</a></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <s-pagination conf="apilogConfig"></s-pagination>
+    </div>
+  </div>
+
+</div>
+<script>
+//是否确认删除
+$(function(){   
+	$("#main table tbody tr td a").click(function(){
+		var name = $(this);
+		var id = name.attr("rel"); //对应id  
+		if (event.srcElement.outerText === "删除") 
+		{
+			if(window.confirm("此操作不可逆，是否确认？"))
+			{
+				$.ajax({
+					type: "POST",
+					url: "/Loginlog/delete/action/one",
+					data: "id=" + id,
+					cache: false, //不缓存此页面   
+					success: function (data) {
+						window.location.reload();
+					}
+				});
+			};
+		};
+	});   
+});
+</script>

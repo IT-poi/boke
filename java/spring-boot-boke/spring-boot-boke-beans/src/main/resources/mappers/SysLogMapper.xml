@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuit.boke.dao.SysLogMapper" >
+  <resultMap id="BaseResultMap" type="com.cuit.boke.beans.entry.SysLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="operation" property="operation" jdbcType="INTEGER" />
+    <result column="breif" property="breif" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="table_name" property="tableName" jdbcType="VARCHAR" />
+    <result column="api" property="api" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    UPDATE sys_log
+    set delete_flag = 1
+    where id = #{id,jdbcType=INTEGER};
+  </delete>
+  <insert id="insert" parameterType="com.cuit.boke.beans.entry.SysLog" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_log (`operation`, breif, content, 
+      `table_name`, api, create_time, 
+      delete_flag)
+    values (#{operation,jdbcType=INTEGER}, #{breif,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{tableName,jdbcType=VARCHAR}, #{api,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      0)
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cuit.boke.beans.entry.SysLog" >
+    update sys_log
+    <set>
+      <if test="operation">`operation` = #{operation,jdbcType=INTEGER},</if>
+      <if test="breif">breif = #{breif,jdbcType=VARCHAR},</if>
+      <if test="content">content = #{content,jdbcType=VARCHAR},</if>
+      <if test="tableName">`table_name` = #{tableName,jdbcType=VARCHAR},</if>
+      <if test="api">api = #{api,jdbcType=VARCHAR},</if>
+      <if test="createTime">create_time = #{createTime,jdbcType=TIMESTAMP}</if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, `operation`, breif, content, `table_name`, api, create_time, delete_flag
+    from sys_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, `operation`, breif, content, `table_name`, api, create_time, delete_flag
+    from sys_log
+    WHERE delete_flag = 0
+  </select>
+</mapper>

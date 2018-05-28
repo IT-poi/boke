@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuit.boke.dao.PraiseMapper" >
+  <resultMap id="BaseResultMap" type="com.cuit.boke.beans.entry.Praise" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="article_id" property="articleId" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from praise
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cuit.boke.beans.entry.Praise" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into praise (article_id, create_by, create_at
+      )
+    values (#{articleId,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cuit.boke.beans.entry.Praise" >
+    update praise
+    set article_id = #{articleId,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, article_id, create_by, create_at
+    from praise
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, article_id, create_by, create_at
+    from praise
+  </select>
+</mapper>

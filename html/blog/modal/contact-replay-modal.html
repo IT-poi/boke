@@ -1,0 +1,14 @@
+<div class="modal-header" style="text-align: center">
+    <h3 class="modal-title" id="modal-title">回复 {{contact.userName}}</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <p style="margin-bottom: 20px"><span>{{contact.userName}}</span>:{{contact.content}}</p>
+        <textarea style="height: 200px" ng-model="contact.replayContext" type="text" class="form-control"></textarea>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    <button class="btn btn-primary" type="button" ng-click="ok()">回复</button>
+</div>

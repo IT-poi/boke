@@ -1,0 +1,250 @@
+.height-big{
+    height: 75px;
+    margin-top: 60px;
+    margin-left: 43%;
+}
+.height-xs{
+    height: 30px;
+}
+.height-match{
+    height:0px;
+    padding-bottom:15%
+}
+.height-ban{
+    /*height:0px;*/
+    /*padding-bottom:60%*/
+}
+.black{
+    /* background: #384259;*/
+    /* background-color: #aad3e5;*/
+    right: -13%;
+    opacity: 0.8;
+    border-left: 3px solid #259cc7;
+}
+.green{
+    background: #A0EECC;
+}
+.qing{
+    background: #6DF1CC;
+}
+.yellow{
+    background: #E3FFC3;
+}
+.red{
+    /*background: #FF89C0 ;*/
+    /* background-color: #e5f3f7;*/
+
+    left: 16%;
+    /*  opacity: 0.8; */
+
+
+}
+.white{
+    background: #ffffff;
+}
+.gray{
+    /* background: #F4F7F7;*/
+
+    display:block;
+    background-image: url("/resources/img/head_b.jpg");
+    background-repeat:no-repeat;
+    width:100%;
+}
+.height-sm{
+    height: 500px;
+}
+.height-match img{
+    position: relative;
+    width: 100%;
+}
+.na_tit{
+    height: 40px;
+    width: 120px;
+    font-family: "微软雅黑";
+    font-size: 15px;
+    color: #ffffff;
+    font-weight: bold;
+    margin-left: 10%;
+    bottom: -10px;
+    text-align: center;
+    line-height: 40px;
+    display: block;
+    background-color: #259cc7;
+
+}
+
+.left_mid_box{
+    margin-top: 25px;
+    width: 100%;
+    padding-bottom: 25px;
+    /*  border-bottom: 2px solid #aad3e5;*/
+}
+.left_mid_box_con{
+    width: 90%;
+}
+
+.left_mid_box_img {
+    width: 74%;
+    /*position: relative;*/
+    margin:0 auto;
+
+
+}
+.left_mid_box_img img{
+    width: 600px;
+    height: 300px;
+    margin: 30px 0;
+
+
+}
+.left_mid_box_line{
+    /* background-color:#e1fef7; */
+    /* background-color: #F4F7F7; */
+
+    background-color: #e5f3f7;
+    opacity: 0.8;
+    /*   background-color: #0DE2EA;
+      background-color: #5E88FC; */
+
+
+    padding-left: 30px;
+    padding-top: 10px;
+    border-radius:10px;
+    margin-bottom: 30px;
+    min-height: 600px;
+
+}
+.baseBlockIn{
+    box-shadow:-2px 2px 2px #DDD;
+    -moz-box-shadow:2px 2px 2px #DDD;
+    -webkit-box-shadow:0px 2px 10px #DDD;
+    position:relative;
+    z-index:1;
+}
+a:hover{
+    text-decoration:none;
+}
+.comment textarea{
+    width: 100%;
+    height: 100px;
+    margin:0 auto;
+
+
+}
+.comment button{
+    margin-top:10px;
+    margin-bottom: 10px;
+    width:200px;
+}
+.navbar-inverse .navbar-nav>li>a {
+    color: #fff;
+}
+.navbar-inverse .navbar-brand {
+    color: #fff;
+}
+.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus {
+    transition:background-color 0.5s ease-out;
+    color: #259CC7;
+    background-color: #fff;
+}
+.left_mid_box_1{
+    border-top: 1px solid #259cc7;
+    padding-top: 15px;
+    margin-bottom:20px;
+}
+.left_mid_box_2{
+    border-left: solid #5E88FC 1.8px;/* dashed */
+    padding-left: 20px;
+    margin-left: 60px;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+.mess_img {
+    display: inline;
+}
+.mess_title {
+    height: 30px;
+}
+.mess_img a>img, .mess_img>img {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 30px;
+    height: auto;
+}
+.mess_name{
+    color:#259cc7;
+    margin-left: 5px;
+
+}
+.mess_name_2{
+
+    color:#259cc7;
+    margin-left: 0px;
+
+}
+.mess_flo{
+    color:#417aaf;
+    margin-left: 10px;
+}
+.mess_time{
+    float:right;
+    color: #BCBCBC;
+    margin-right:10px;
+}
+.mess_con{
+    /*min-height:60px;*/
+    /*margin-left: 115px;*/
+    padding-left: 15px;
+    margin-top: 10px;
+    /* margin-bottom: 20px;  */
+    /*border: 1px solid #aad3e5;*/
+}
+.parise{
+    color: #8590a6;
+}
+.blue{
+    color: #175199;
+}
+/*.mess_con a{*/
+
+    /*padding-right: 10px;*/
+    /*padding-bottom: 10px;*/
+    /*float: right;*/
+    /*clear: both;*/
+/*}*/
+.left_mid_box_mess{
+    width: 100%;
+    padding-top: 16px;
+    border-top: 1px solid #259cc7;
+    margin: 0 auto;
+    text-align: center;
+}
+.left_mid_box_mess label{
+    display: flex;
+    width:60%;
+    /* margin-left:20%; */
+}
+.left_mid_box_mess input{
+    display: flex;
+    /*    	  width:60%;
+             margin-left:20%; */
+}
+.tishi{
+    width:80%;
+    margin-left:10%;
+    margin-top: 0px;
+    padding-top:5px;
+    padding-bottom: 5px;
+    text-align:center;
+    background-color: #ADF7D1;
+    color:#8971D0;
+    font-size: 18px;
+}
+.modal-body textarea{
+    height: 100%;
+    width: 100%;
+    border-style: solid;
+    resize : none;/*去掉右下角标签*/
+    border-color: #ffffff;
+    /*  outline:none;/*去掉点击后的篮框*/
+}

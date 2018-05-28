@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cuit.boke.dao.SysApiLogMapper">
+  <resultMap id="BaseResultMap" type="com.cuit.boke.beans.entry.SysApiLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="http_method" jdbcType="VARCHAR" property="httpMethod" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="clazz" jdbcType="VARCHAR" property="clazz" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="args" jdbcType="VARCHAR" property="args" />
+    <result column="error" jdbcType="VARCHAR" property="error" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="delete_flag" jdbcType="INTEGER" property="deleteFlag" />
+  </resultMap>
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    UPDATE sys_api_log
+    SET delete_flag = 1
+    where id = #{id,jdbcType=INTEGER};
+  </update>
+  <insert id="insert" parameterType="com.cuit.boke.beans.entry.SysApiLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_api_log (http_method, ip, url, 
+      `desc`, clazz, `method`, 
+      args, error, user_id, 
+      create_time, delete_flag)
+    values (#{httpMethod,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{desc,jdbcType=VARCHAR}, #{clazz,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, 
+      #{args,jdbcType=VARCHAR}, #{error,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, 0)
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cuit.boke.beans.entry.SysApiLog">
+    update sys_api_log
+    <set>
+      <if test="httpMethod != null">http_method = #{httpMethod,jdbcType=VARCHAR},</if>
+      <if test="ip != null">ip = #{ip,jdbcType=VARCHAR},</if>
+      <if test="url != null">url = #{url,jdbcType=VARCHAR},</if>
+      <if test="desc != null">`desc` = #{desc,jdbcType=VARCHAR},</if>
+      <if test="clazz != null">clazz = #{clazz,jdbcType=VARCHAR},</if>
+      <if test="method != null">`method` = #{method,jdbcType=VARCHAR},</if>
+      <if test="args != null">args = #{args,jdbcType=VARCHAR},</if>
+      <if test="error != null">error = #{error,jdbcType=VARCHAR},</if>
+      <if test="user_id != null">args = #{args,jdbcType=VARCHAR},</if>
+      <if test="createTime != null">create_time = #{createTime,jdbcType=TIMESTAMP}</if>
+    </set>
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, http_method, ip, url, `desc`, clazz, `method`, args, error, user_id, create_time
+    from sys_api_log
+    where id = #{id,jdbcType=INTEGER} and delete_flag = 0
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, http_method, ip, url, `desc`, clazz, `method`, args, error, user_id, create_time
+    from sys_api_log
+    WHERE delete_flag = 0
+  </select>
+
+  <select id="listBy" resultMap="BaseResultMap" parameterType="map">
+    select id, http_method, ip, url, `desc`, clazz, `method`, args, error, user_id, create_time
+    from sys_api_log
+    <where>
+      delete_flag = 0
+      <if test="httpMethod != null and httpMethod != ''"> and http_method = #{httpMethod}</if>
+      <if test="ip != null and ip != ''"> and ip like contact('%', #{ip}, '%') </if>
+      <if test="url != null and url != ''"> and url like contact('%', #{url}, '%') </if>
+      <if test="desc != null and desc != ''"> and `desc` like contact('%', #{desc}, '%') </if>
+      <if test="clazz != null and clazz != ''"> and clazz like contact('%', #{clazz}, '%') </if>
+      <if test="method != null and method != ''"> and method like contact('%', #{method}, '%') </if>
+      <if test="userId != null and userId != ''"> and user_id like contact('%', #{userId}, '%') </if>
+    </where>
+  </select>
+</mapper>

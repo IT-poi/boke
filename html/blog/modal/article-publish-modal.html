@@ -1,0 +1,140 @@
+
+<style>
+    label, input, select{
+        vertical-align: middle;
+    }
+    .mui-switch {
+        width: 52px !important;
+        height: 31px !important;
+        position: relative !important;
+        border: 1px solid #dfdfdf !important;
+        background-color: #fdfdfd !important;
+        box-shadow: #dfdfdf 0 0 0 0 inset !important;
+        border-radius: 20px !important;
+        background-clip: content-box !important;
+        display: inline-block !important;
+        -webkit-appearance: none !important;
+        user-select: none !important;
+        outline: none !important; }
+    .mui-switch:before {
+        content: '';
+        width: 29px;
+        height: 29px;
+        position: absolute;
+        top: 0px;
+        left: 0;
+        border-radius: 20px;
+        background-color: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
+    .mui-switch:checked {
+        border-color: #64bd63 !important;
+        box-shadow: #64bd63 0 0 0 16px inset !important;
+        background-color: #64bd63 !important; }
+    .mui-switch:checked:before {
+        left: 21px; }
+    .mui-switch.mui-switch-animbg {
+        transition: background-color ease 0.4s !important; }
+    .mui-switch.mui-switch-animbg:before {
+        transition: left 0.3s !important; }
+    .mui-switch.mui-switch-animbg:checked {
+        box-shadow: #dfdfdf 0 0 0 0 inset !important;
+        background-color: #64bd63 !important;
+        transition: border-color 0.4s, background-color ease 0.4s !important; }
+    .mui-switch.mui-switch-animbg:checked:before {
+        transition: left 0.3s !important; }
+
+    .form-tags span, .input-tags {
+        padding: .3em .6em .3em !important;
+        display: inline-block !important;
+        font-size: 12px !important;
+        margin: 4px 4px 0 0 !important;
+        line-height: 26px !important;
+        /*font-weight: normal !important;*/
+    }
+
+    .form-tags span i {
+        font-size: 10px !important;
+        line-height: 25px !important;
+        padding-left: 6px !important;
+        margin-left: 5px;
+        margin-top: 8px;
+    }
+
+    .input-tags {
+        margin-top: 0px !important;
+        width: auto !important;
+        height: auto;
+    }
+
+
+    #app {
+        position: relative;
+        /*text-align: center;*/
+    }
+
+    .wrap {
+        margin-bottom: 5px;
+    }
+
+
+    .avatar {
+        display: block;
+        width: 200px;
+        margin: 10px auto;
+        margin-left: 10px;
+    }
+</style>
+<div class="modal-header" style="text-align: center">
+    <h3 class="modal-title" id="modal-title">发布文章</h3>
+</div>
+<div class="modal-body" data-ng-init="init()">
+    <div class="row">
+        <div class="col-md-11 col-md-offset-1" >
+            <form>
+                <div class="row" style="margin-bottom: 20px">
+                    <div class="col-md-2" style="margin-top: 5px"><label>文章标签</label></div>
+                    <div class="col-md-10"><input type="text" name="tags" id="tags" data-toggle="tags"></div>
+                </div>
+                <div class="row" style="margin-bottom: 20px">
+                    <div class="col-md-2" style="margin-top: 5px"><label>文章分类</label></div>
+                    <div class="col-md-10">
+                        <select class="form-control input-small input-inline" ng-model="category" ng-options="x.name for x in categories">
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="app">
+                        <div class="item">
+                            <a class="btn" @click="toggleShow1">设置题图</a>
+                            <!--<img class="avatar" v-if="avatarUrl1" :src="avatarUrl1" v-show="true" style="display: none;">-->
+                            <img class="avatar" id="picUrl" src="{{article.picUrl}}">
+                            <my-upload url="http://193.112.112.136:8080/boke-core/api/1/manage/article/uploadPic" img-format="png"
+                                       :width="1029"
+                                       :height="484"
+                                       field="editormd-image-file"
+                                       key="0"
+                                       :no-rotate="false"
+                                       :value.sync="show1"
+                                       :params="getParam()"></my-upload>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2" style="margin-top: 5px"><label>私密文章</label></div>
+                    <div class="col-md-10"><input ng-model="privacy" class="mui-switch mui-switch-animbg" type="checkbox"></div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    <button class="btn btn-warning" type="button" ng-click="ok(0)">保存草稿</button>
+    <button class="btn btn-primary" type="button" ng-click="ok(1)">发布文章</button>
+</div>
+<script src="plug/uploader/example/demo-src.js"></script>
+<script>
+//    $('[data-toggle="tags"]').tags();
+</script>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuit.boke.dao.SysUserMapper" >
+  <resultMap id="BaseResultMap" type="com.cuit.boke.beans.entry.SysUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_nick_name" property="userNickName" jdbcType="VARCHAR" />
+    <result column="user_full_name" property="userFullName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
+    <result column="user_state" property="userState" jdbcType="INTEGER" />
+    <result column="role_ids" property="roleIds" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    UPDATE sys_user
+    set delete_flag = 1
+    where id = #{id,jdbcType=INTEGER};
+  </delete>
+  <insert id="insert" parameterType="com.cuit.boke.beans.entry.SysUser" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_user (user_name, user_nick_name, user_full_name, 
+      sex, age, user_pwd, 
+      email, phone, address, 
+      signature, user_state, role_ids, 
+      create_by, create_at, update_by, 
+      update_at, delete_flag)
+    values (#{userName,jdbcType=VARCHAR}, #{userNickName,jdbcType=VARCHAR}, #{userFullName,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=INTEGER}, #{age,jdbcType=INTEGER}, #{userPwd,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{signature,jdbcType=VARCHAR}, #{userState,jdbcType=INTEGER}, #{roleIds,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{updateAt,jdbcType=TIMESTAMP}, 0)
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cuit.boke.beans.entry.SysUser" >
+    update sys_user
+    <set>
+      <if test="userName != null">user_name = #{userName,jdbcType=VARCHAR},</if>
+      <if test="userNickName != null">user_nick_name = #{userNickName,jdbcType=VARCHAR},</if>
+      <if test="userFullName != null">user_full_name = #{userFullName,jdbcType=VARCHAR},</if>
+      <if test="sex != null">sex = #{sex,jdbcType=INTEGER},</if>
+      <if test="age != null">age = #{age,jdbcType=INTEGER},</if>
+      <if test="userPwd != null">user_pwd = #{userPwd,jdbcType=VARCHAR},</if>
+      <if test="email != null">email = #{email,jdbcType=VARCHAR},</if>
+      <if test="phone != null">phone = #{phone,jdbcType=VARCHAR},</if>
+      <if test="address != null">address = #{address,jdbcType=VARCHAR},</if>
+      <if test="signature != null">signature = #{signature,jdbcType=VARCHAR},</if>
+      <if test="userState != null">user_state = #{userState,jdbcType=INTEGER},</if>
+      <if test="roleIds != null">role_ids = #{roleIds,jdbcType=VARCHAR},</if>
+      <if test="createBy != null">create_by = #{createBy,jdbcType=INTEGER},</if>
+      <if test="createAt != null">create_at = #{createAt,jdbcType=TIMESTAMP},</if>
+      <if test="updateBy != null">update_by = #{updateBy,jdbcType=INTEGER},</if>
+      <if test="updateAt != null">update_at = #{updateAt,jdbcType=TIMESTAMP}</if>
+    </set>
+    where id = #{id,jdbcType=INTEGER} and delete_flag = 0
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, user_name, user_nick_name, user_full_name, sex, age, user_pwd, email, 
+    phone, address, signature, user_state, role_ids, create_by, create_at, update_by, 
+    update_at, delete_flag
+    from sys_user
+    where delete_flag = 0 and id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, user_name, user_nick_name, user_full_name, sex, age, user_pwd, email, 
+    phone, address, signature, user_state, role_ids, create_by, create_at, update_by, 
+    update_at, delete_flag
+    from sys_user
+    WHERE delete_flag = 0
+  </select>
+  <select id="getBy" parameterType="com.yinjk.web.core.jwt.beans.dto.LoginDTO" resultMap="BaseResultMap">
+    SELECT id, user_name, user_nick_name, user_full_name, sex, age, user_pwd, email,
+      phone, address, signature, user_state, role_ids, create_by, create_at, update_by,
+      update_at
+    FROM sys_user
+    WHERE user_name = #{userName} and user_pwd = #{password} and delete_flag = 0
+  </select>
+
+  <select id="getByUserName" parameterType="string" resultMap="BaseResultMap">
+    SELECT id, user_name, user_nick_name, user_full_name, sex, age, email,
+    phone, address, signature, user_state, role_ids, create_by, create_at, update_by,
+    update_at
+    FROM sys_user
+    WHERE user_name = #{userName} and delete_flag = 0
+  </select>
+</mapper>

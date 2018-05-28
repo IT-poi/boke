@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuit.boke.article.dao.CategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.cuit.boke.article.beans.entry.Category" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="alias" property="alias" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    UPDATE category
+    set delete_flag = 1
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cuit.boke.article.beans.entry.Category" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into category (`name`, parent_id, alias, description, create_by,
+      create_at, update_by, update_at, 
+      delete_flag)
+    values (#{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{alias,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER},
+      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
+      0)
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cuit.boke.article.beans.entry.Category" >
+    update category
+    <set>
+      <if test="name != null">`name` = #{name,jdbcType=VARCHAR},</if>
+      <if test="parentId != null">`parent_id` = #{parentId,jdbcType=INTEGER},</if>
+      <if test="alias != null">`alias` = #{alias,jdbcType=VARCHAR},</if>
+      <if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+      <if test="createBy != null">create_by = #{createBy,jdbcType=INTEGER},</if>
+      <if test="createAt != null">create_at = #{createAt,jdbcType=TIMESTAMP},</if>
+      <if test="updateBy != null">update_by = #{updateBy,jdbcType=INTEGER},</if>
+      <if test="updateAt != null">update_at = #{updateAt,jdbcType=TIMESTAMP},</if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, `name`, alias, description, create_by, create_at, update_by, update_at, parent_id, delete_flag
+    from category
+    where id = #{id,jdbcType=INTEGER} and delete_flag = 0
+  </select>
+  <select id="getByAlias" resultMap="BaseResultMap" parameterType="string" >
+    select id, `name`, alias, description, create_by, create_at, update_by, update_at, parent_id, delete_flag
+    from category
+    where alias = #{alias,jdbcType=VARCHAR} and delete_flag = 0
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, `name`, alias, description, create_by, create_at, update_by, update_at, delete_flag
+    from category
+    WHERE delete_flag = 0
+  </select>
+  <select id="listBy" resultMap="BaseResultMap" parameterType="map">
+    select id, `name`, alias, description, create_by, create_at, update_by, update_at, delete_flag
+    from category
+      <where>
+        delete_flag = 0
+        <if test="name != null and name != ''">
+          and name = #{name}
+        </if>
+        <if test="alias != null and alias != ''">
+          and alias = #{alias}
+        </if>
+        <if test="createBy != null">
+          and create_by = #{createBy}
+        </if>
+        <if test="createAt != null">
+          and create_at = #{createAt}
+        </if>
+        <if test="updateAt != null">
+          and update_at = #{updateAt}
+        </if>
+        <if test="updateBy != null">
+          and update_by = #{updateBy}
+        </if>
+      </where>
+  </select>
+  <select id="listWithOther" resultType="map" parameterType="map">
+    SELECT c.id, c.`name`, c.alias, c.description, c.create_by, c.create_at, c.update_by, c.update_at, c.parent_id, count(a.id) as total
+    FROM category as c
+    LEFT JOIN article as a ON a.category_id = c.id and a.delete_flag = 0
+    LEFT JOIN sys_user as su ON su.id = c.create_by AND su.delete_flag = 0
+    <where>
+      c.delete_flag = 0
+      <if test="name != null and name != ''">
+        and c.name = #{name}
+      </if>
+      <if test="userName != null and userName != ''">
+        and su.user_name = #{userName}
+      </if>
+      <if test="parentId != null">
+        and c.parent_id = #{parentId}
+      </if>
+      <if test="alias != null and alias != ''">
+        and c.alias = #{alias}
+      </if>
+      <if test="createBy != null">
+        and c.create_by = #{createBy}
+      </if>
+      <if test="createAt != null">
+        and c.create_at = #{createAt}
+      </if>
+      <if test="updateAt != null">
+        and c.update_at = #{updateAt}
+      </if>
+      <if test="updateBy != null">
+        and c.update_by = #{updateBy}
+      </if>
+    </where>
+    GROUP BY c.id
+  </select>
+</mapper>

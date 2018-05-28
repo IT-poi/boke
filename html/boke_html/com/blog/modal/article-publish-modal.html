@@ -1,0 +1,34 @@
+<div class="modal-header" style="text-align: center">
+    <h3 class="modal-title" id="modal-title">发布文章</h3>
+</div>
+<div class="modal-body" data-ng-init="init()">
+    <div class="row">
+        <div class="col-md-11 col-md-offset-1" >
+            <form>
+                <div class="row" style="margin-bottom: 20px">
+                    <div class="col-md-2" style="margin-top: 5px"><label>文章标签</label></div>
+                    <div class="col-md-10"><input type="text" name="tags" id="tags" data-toggle="tags"></div>
+                </div>
+                <div class="row" style="margin-bottom: 20px">
+                    <div class="col-md-2" style="margin-top: 5px"><label>文章分类</label></div>
+                    <div class="col-md-10">
+                        <select class="form-control input-small input-inline" ng-model="category" ng-options="x.name for x in categories">
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2" style="margin-top: 5px"><label>私密文章</label></div>
+                    <div class="col-md-10"><input ng-model="privacy" class="mui-switch mui-switch-animbg" type="checkbox"></div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+
+    <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    <button class="btn btn-warning" type="button" ng-click="ok(0)">保存草稿</button>
+    <button class="btn btn-primary" type="button" ng-click="ok(1)">发布文章</button>
+</div>

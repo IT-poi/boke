@@ -1,0 +1,128 @@
+<div class="zerogrid">
+    <div class="cat-title t-center">
+        <a href="#">{{category.name}}</a>
+    </div>
+    <div class="row">
+        <div id="main-content" class="col-2-3">
+            <div class="wrap-content">
+                <div class="row">
+                    <p style="text-align:center" ng-show="articles.length<=0">暂无结果。。 点击<a href="#/home"><span>返回主页</span></a></p>
+                    <div class="col-1-2" ng-repeat="x in articles">
+                        <div class="wrap-col" style="height: 440px;">
+                            <article style="border:none; display: inline">
+                                <!--<div class="art-header">-->
+                                    <!--<div class="entry-title">-->
+                                        <!--<a href="#/article/{{x.id}}">{{x.title}}</a>-->
+                                    <!--</div>-->
+                                    <!--<span>发布于 {{x.createAt | date:'yyyy-MM-dd HH:mm:ss'}}</span>-->
+                                <!--</div>-->
+                                <div class="art-content" style="text-align: center;">
+                                    <div class="zoom-container">
+                                        <a href="#/article/{{x.id}}">
+                                            <img src="{{x.picUrl}}" />
+                                        </a>
+                                    </div>
+                                    <p class="entry-meta">{{x.labelNames}} </p>
+                                    <div class="entry-title ell">
+                                        <a href="#/article/{{x.id}}">{{x.title}}</a>
+                                    </div>
+                                    <p class="entry-meta">
+                                        <span>{{x.createAt | date:'yyyy年MM月dd日'}} </span>
+                                        <span> | 浏览量:{{x.readCount}}</span>
+                                        <span> | 评论:{{x.reviewCount}}</span>
+                                    </p>
+
+                                    <p class="entry-brief" style="text-align: left;margin-top: 15px">{{x.brief}}</p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+                <s-pagination conf="articleConfig"></s-pagination>
+            </div>
+        </div>
+        <div id="sidebar" class="col-1-3" style="padding-left: 30px">
+
+            <!---- Start Widget ---->
+            <div class="widget wid-follow">
+                <div class="wid-header">
+                    <h5 >FOLLOW ME</h5>
+                </div>
+                <div class="wid-content">
+                    <ul class="quick-link">
+                        <li style="padding-left: 0px"><a href=""><i class="fa fa-facebook"></i></a></li>
+                        <li><a href=""><i class="fa fa-twitter"></i></a></li>
+                        <li><a href=""><i class="fa fa-youtube"></i></a></li>
+                        <li><a href=""><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href=""><i class="fa fa-instagram"></i></a></li>
+                        <li><a href=""><i class="fa fa-github"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <!---- Start Widget ---->
+            <div class="widget wid-about">
+                <div class="wid-header">
+                    <h5>ABOUT ME</h5>
+                </div>
+                <div class="wid-content">
+                    <p>姓名·尹健康</p>
+                    <p>性别·男</p>
+                    <p>毕业院校·成都信息工程大学</p>
+                    <p>邮箱·inori.yinjk@gmail.com</p>
+                    <p>学如逆水行舟，不进则退！</p>
+                </div>
+            </div>
+            <!---- Start Widget ---->
+            <div class="widget wid-post">
+                <div class="wid-header" style="margin-bottom: 0px">
+                    <h5 class="section-title" style="text-align: center"><span>最近发布</span></h5>
+                </div>
+                <div class="wid-content">
+                    <div ng-repeat="x in lastArticles" style="margin-top: 20px">
+                        <a href="#/article/{{x.id}}">
+                            <div>{{x.title}}</div>
+                            <div>
+                                <span>浏览量:{{x.readCount}}</span>
+                                <span>| 评论:{{x.reviewCount}}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!---- Start Widget ---->
+            <div class="widget wid-post">
+                <div class="wid-header" style="margin-bottom: 0px">
+                    <h5 class="section-title" style="text-align: center"><span>阅读排行</span></h5>
+                </div>
+                <div class="wid-content">
+                    <div ng-repeat="x in lastArticles" style="margin-top: 20px">
+                        <a href="#/article/{{x.id}}">
+                            <div>{{x.title}}</div>
+                            <div>
+                                <span>浏览量:{{x.readCount}}</span>
+                                <span>| 评论:{{x.reviewCount}}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="widget wid-post">
+                <div class="wid-header" style="margin-bottom: 0px">
+                    <h5 class="section-title" style="text-align: center"><span>文章归档</span></h5>
+                </div>
+                <div class="wid-content">
+                    <div ng-repeat="x in lastArticles" style="margin-top: 20px">
+                        <a href="#/article/{{x.id}}">
+                            <div>{{x.title}}</div>
+                            <div>
+                                <span>浏览量:{{x.readCount}}</span>
+                                <span>| 评论:{{x.reviewCount}}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

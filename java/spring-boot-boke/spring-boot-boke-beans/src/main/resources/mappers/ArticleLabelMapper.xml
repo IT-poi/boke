@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuit.boke.article.dao.ArticleLabelMapper" >
+  <resultMap id="BaseResultMap" type="com.cuit.boke.article.beans.entry.ArticleLabel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="article_id" property="articleId" jdbcType="INTEGER" />
+    <result column="label_id" property="labelId" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    UPDATE article_label
+    SET delete_flag = 1
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cuit.boke.article.beans.entry.ArticleLabel" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into article_label (article_id, label_id, create_by,
+      create_at, update_by, update_at, 
+      delete_flag)
+    values (#{articleId,jdbcType=INTEGER}, #{labelId,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER},
+      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
+      0)
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cuit.boke.article.beans.entry.ArticleLabel" >
+    update article_label
+    set article_id = #{articleId,jdbcType=INTEGER},
+      label_id = #{labelId,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_at = #{updateAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, article_id, label_id, create_by, create_at, update_by, update_at, delete_flag
+    from article_label
+    where delete_flag = 0 AND id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, article_id, label_id, create_by, create_at, update_by, update_at, delete_flag
+    from article_label
+    WHERE delete_flag = 0
+  </select>
+
+  <select id="listBy" resultMap="BaseResultMap" parameterType="map">
+    select id, article_id, label_id, create_by, create_at, update_by, update_at, delete_flag
+    from article_label
+    <where>
+      delete_flag = 0
+      <if test="articleId != null">
+        and article_id = #{articleId}
+      </if>
+      <if test="labelId != null">
+        and label_id = #{labelId}
+      </if>
+      <if test="createBy != null">
+        and create_by = #{createBy}
+      </if>
+    </where>
+  </select>
+  <select id="listByWithLabel" resultType="map" parameterType="map">
+    select al.id, article_id as articleId, label_id as labelId, al.create_by as createBy, al.create_at as createAt, al.update_by, al.update_at as updateAt, l.name as labelName
+    from article_label AS al
+    INNER JOIN label as l ON al.label_id = l.id and l.delete_flag = 0
+    <where>
+      al.delete_flag = 0
+      <if test="articleId != null">
+        and al.article_id = #{articleId}
+      </if>
+      <if test="labelId != null">
+        and al.label_id = #{labelId}
+      </if>
+      <if test="createBy != null">
+        and al.create_by = #{createBy}
+      </if>
+    </where>
+  </select>
+</mapper>

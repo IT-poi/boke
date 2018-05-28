@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cuit.boke.label.dao.LabelMapper" >
+  <resultMap id="BaseResultMap" type="com.cuit.boke.label.beans.entry.Label" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="article_count" property="articleCount" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    UPDATE label
+    set delete_flag = 1
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cuit.boke.label.beans.entry.Label" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into label (`name`, article_count, create_by, 
+      create_at, update_by, update_at, 
+      delete_flag)
+    values (#{name,jdbcType=VARCHAR}, #{articleCount,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateAt,jdbcType=TIMESTAMP}, 
+      0)
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cuit.boke.label.beans.entry.Label" >
+    update label
+    <set>
+      <if test="name != null">`name` = #{name,jdbcType=VARCHAR},</if>
+      <if test="articleCount != null">article_count = #{articleCount,jdbcType=INTEGER},</if>
+      <if test="createBy != null">create_by = #{createBy,jdbcType=INTEGER},</if>
+      <if test="createAt != null">create_at = #{createAt,jdbcType=TIMESTAMP},</if>
+      <if test="updateBy != null">update_by = #{updateBy,jdbcType=INTEGER},</if>
+      <if test="updateAt != null">update_at = #{updateAt,jdbcType=TIMESTAMP}</if>
+    </set>
+    where delete_flag = 0 and id = #{id,jdbcType=INTEGER};
+  </update>
+  <update id="minusArticle" parameterType="int" >
+    update label
+    SET article_count = article_count - 1
+    where delete_flag = 0 and id = #{id,jdbcType=INTEGER};
+  </update>
+  <update id="plusArticle" parameterType="int" >
+    update label
+    SET article_count = article_count + 1
+    where delete_flag = 0 and id = #{id,jdbcType=INTEGER};
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, `name`, article_count, create_by, create_at, update_by, update_at, delete_flag
+    from label
+    where delete_flag = 0 AND id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, `name`, article_count, create_by, create_at, update_by, update_at, delete_flag
+    from label
+    WHERE delete_flag = 0
+  </select>
+
+  <select id="getByName" resultMap="BaseResultMap" parameterType="string" >
+    select id, `name`, article_count, create_by, create_at, update_by, update_at, delete_flag
+    from label
+    where delete_flag = 0 AND name = #{name}
+    limit 1
+  </select>
+
+  <select id="listBy" resultMap="BaseResultMap" parameterType="map">
+    select id, `name`, article_count, create_by, create_at, update_by, update_at
+    from label
+    <where>
+      delete_flag = 0
+      <if test="id != null">
+        and id = ${id}
+      </if>
+      <if test="name != null">
+        and name = ${name}
+      </if>
+      <if test="articleCount != null">
+        and article_count = ${articleCount}
+      </if>
+      <if test="createBy != null">
+        and create_by = ${createBy}
+      </if>
+      <if test="createAt != null">
+        and create_at = ${createAt}
+      </if>
+      <if test="updateBy != null">
+        and update_by = ${updateBy}
+      </if>
+    </where>
+  </select>
+</mapper>

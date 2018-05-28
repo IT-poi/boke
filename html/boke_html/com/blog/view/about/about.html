@@ -1,0 +1,106 @@
+<div class="zerogrid">
+    <div class="wrap-container clearfix">
+        <div class="row">
+            <div id="main-content" class="col-2-3">
+                <div class="wrap-content">
+                    <div class="col-full">
+                        <div style="margin-top: 60px;">
+                            <div class="contact" style="text-align: center; font-size: 16px">
+                                <div id="contact_form">
+                                    <p> 尹健康 </p>
+                                    <p> 来自成都信息工程大学</p>
+                                    <p> 喜欢研究 java/并发/spring/分布式，善于思考问题</p>
+                                    <p> 在这里记录下研究技术过程中的知识点与感悟，和一些生活中的思考与你分享</p>
+                                    <p> 希望能够和你共同进步</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="sidebar" class="col-1-3" style="padding-left: 30px">
+
+                <!---- Start Widget ---->
+                <div class="widget wid-follow">
+                    <div class="wid-header">
+                        <h5 >FOLLOW ME</h5>
+                    </div>
+                    <div class="wid-content">
+                        <ul class="quick-link">
+                            <li style="padding-left: 0px"><a href="https://www.facebook.com/yinjk.inori.9"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href=""><i class="fa fa-twitter"></i></a></li>
+                            <li><a href=""><i class="fa fa-youtube"></i></a></li>
+                            <li><a href=""><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href=""><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="https://github.com/IT-poi"><i class="fa fa-github"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!---- Start Widget ---->
+                <div class="widget wid-about">
+                    <div class="wid-header">
+                        <h5>ABOUT ME</h5>
+                    </div>
+                    <div class="wid-content">
+                        <p>姓名·尹健康</p>
+                        <p>性别·男</p>
+                        <p>毕业院校·成都信息工程大学</p>
+                        <p>邮箱·inori.yinjk@gmail.com</p>
+                        <p>学如逆水行舟，不进则退！</p>
+                    </div>
+                </div>
+                <!---- Start Widget ---->
+                <div class="widget wid-post">
+                    <div class="wid-header" style="margin-bottom: 0px">
+                        <h5 class="section-title" style="text-align: center"><span>最近发布</span></h5>
+                    </div>
+                    <div class="wid-content">
+                        <div ng-repeat="x in lastArticles" style="margin-top: 20px">
+                            <a href="#/article/{{x.id}}">
+                                <div>{{x.title}}</div>
+                                <div>
+                                    <span>浏览量:{{x.readCount}}</span>
+                                    <span>| 评论:{{x.reviewCount}}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!---- Start Widget ---->
+                <div class="widget wid-post">
+                    <div class="wid-header" style="margin-bottom: 0px">
+                        <h5 class="section-title" style="text-align: center"><span>阅读排行</span></h5>
+                    </div>
+                    <div class="wid-content">
+                        <div ng-repeat="x in lastArticles" style="margin-top: 20px">
+                            <a href="#/article/{{x.id}}">
+                                <div>{{x.title}}</div>
+                                <div>
+                                    <span>浏览量:{{x.readCount}}</span>
+                                    <span>| 评论:{{x.reviewCount}}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget wid-post">
+                    <div class="wid-header" style="margin-bottom: 0px">
+                        <h5 class="section-title" style="text-align: center"><span>文章归档</span></h5>
+                    </div>
+                    <div class="wid-content">
+                        <div ng-repeat="x in lastArticles" style="margin-top: 20px">
+                            <a href="#/article/{{x.id}}">
+                                <div>{{x.title}}</div>
+                                <div>
+                                    <span>浏览量:{{x.readCount}}</span>
+                                    <span>| 评论:{{x.reviewCount}}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

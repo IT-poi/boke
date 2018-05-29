@@ -7,6 +7,7 @@ import com.cuit.boke.contact.beans.entry.Contact;
 import com.cuit.boke.contact.dao.ContactMapper;
 import com.cuit.boke.page.PageCommonDTO;
 import com.cuit.boke.utils.MailService;
+import com.cuit.boke.utils.SensitiveWordFilter;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.yinjk.web.core.exception.BizException;
@@ -29,6 +30,9 @@ public class ContactService {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private SensitiveWordFilter sensitiveWordFilter;
+
 
     /**
      * 添加留言
@@ -40,6 +44,10 @@ public class ContactService {
         Contact contact = new Contact();
         BeanUtils.copyProperties(contactDTO, contact);
         contact.setCreateAt(new Date());
+        String content = contact.getContent();
+        //过滤敏感词
+        content = sensitiveWordFilter.replaceSensitiveWord(content, SensitiveWordFilter.maxMatchType, "*");
+        contact.setContent(content);
         return contactMapper.insert(contact) == 1;
     }
 
@@ -76,7 +84,11 @@ public class ContactService {
         Integer contactId = contactReplayDTO.getContactId();
         Contact contact = contactMapper.selectByPrimaryKey(contactId);
         String email = contact.getEmail();
-        mailService.sendMail(email, contact.getSubject(), contactReplayDTO.getReplayContext());
+        //发邮件
+        String mailContext = "您好：" + contact.getName() + "！\n" +
+                "您在：<a href=\"http://193.112.112.136/\">Fool的个人博客</a>网站中给博主的留言有了回复！" +
+                "回复内容是：\n" + contactReplayDTO.getReplayContext();
+        mailService.sendMail(email, contact.getSubject(), mailContext);
         Contact contact1 = new Contact();
         contact1.setId(contactId);
         contact1.setReplay(1);

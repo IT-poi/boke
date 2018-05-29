@@ -21,7 +21,7 @@ public class MailApi {
     private MailService mailService;
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
-    @ApiOperation(value = "发送邮件", notes = "上传图片")
+    @ApiOperation(value = "发送邮件", notes = "发送邮件")
     public ResponseVO uploadTemplate() throws BizException {
         mailService.sendMail("inori.yinjk@gmail.com", "测试", "这是测试内容");
         return ResponseFactory.ok(EApiStatus.SUCCESS);

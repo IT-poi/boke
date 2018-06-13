@@ -30,4 +30,12 @@ public interface EsArticleService {
      * @return
      */
     PageVO<Article> searchArticle(Integer pageNumber, Integer pageSize, String searchContent, boolean all);
+
+    /**
+     * 根据文章id删除ES中的文章
+     *
+     * @param articleId
+     * @return
+     */
+    void deleteById(Integer articleId);
 }

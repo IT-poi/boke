@@ -19,6 +19,19 @@ public interface ArticleMapper {
     int updateByPrimaryKey(Article record);
 
     /**
+     * 文章数量
+     *
+     * @return 数量
+     */
+    Integer count();
+
+    /**
+     * 文章阅读量
+     *
+     * @return
+     */
+    Integer readCount();
+    /**
      * 根据条件查询文章列表
      *
      * @param map 查询条件

@@ -18,8 +18,6 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * 城市 ES 业务逻辑实现类
  * <p>
@@ -116,4 +114,8 @@ public class EsArticleServiceImpl implements EsArticleService {
     }
 
 
+    @Override
+    public void deleteById(Integer articleId) {
+        articleRepository.delete(articleId);
+    }
 }

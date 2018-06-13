@@ -36,6 +36,10 @@ public class SysUserService {
         return sysUserMapper.selectByPrimaryKey(userId);
     }
 
+    public SysUser getOne(){
+        return sysUserMapper.getOne();
+    }
+
     public void update(Integer userId, UserUpdateDTO userUpdateDTO) throws BizException {
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         BeanUtils.copyProperties(userUpdateDTO, sysUser);

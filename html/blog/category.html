@@ -57,7 +57,7 @@
           <td> {{x.alias}} </td>
           <td class="center"> {{x.total}} </td>
           <td>
-            <span class="center"><a href="#/category/{{x.alias}}">修改</a></span> <span class="center"><a href="javascript:;">删除</a></span>
+            <span class="center"><a href="#/category/{{x.alias}}">修改</a></span> <span class="center"><a ng-click="delete(x.id)" href="javascript:;">删除</a></span>
           </td>
         </tr>
         </tbody>

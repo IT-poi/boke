@@ -67,6 +67,11 @@
     from contact
     WHERE delete_flag = 0
   </select>
+  <select id="count" resultType="int" >
+    select count(*)
+    from contact
+    WHERE delete_flag = 0
+  </select>
 
   <select id="findBy" resultMap="BaseResultMap" parameterType="map">
     select id, subject, content, user_id, `name`, email, portrait_url, `ignore`, replay, create_by, create_user_name,

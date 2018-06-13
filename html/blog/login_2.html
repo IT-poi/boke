@@ -84,18 +84,23 @@
         </form>
         <!-- END LOGIN FORM -->
         <!-- BEGIN FORGOT PASSWORD FORM -->
-        <form class="forget-form" action="index.html" method="post" style="margin-top: 200px">
+        <div style="margin-top: 150px">
             <div class="form-title" >
                 <span class="form-title">Forget Password ?</span>
                 <span class="form-subtitle">Enter your e-mail to reset it.</span>
             </div>
+            <div id="ftishi" class="alert alert-success display-hide">
+                <button class="close" data-close="alert"></button>
+                <span id="fAlertValue"> 密码重置成功 </span>
+            </div>
             <div class="form-group">
-                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" /> </div>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="用户名" name="fUserName" style="margin-bottom: 15px" />
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="fEmail" /> </div>
             <div class="form-actions">
                 <button type="button" id="back-btn" class="btn green uppercase">Back</button>
-                <button type="submit" class="btn red uppercase pull-right">Submit</button>
+                <button class="btn red uppercase pull-right" onclick="tijiao()">Submit</button>
             </div>
-        </form>
+        </div>
         <!-- END FORGOT PASSWORD FORM -->
         <!-- BEGIN REGISTRATION FORM -->
         <form class="register-form" action="index.html" method="post">

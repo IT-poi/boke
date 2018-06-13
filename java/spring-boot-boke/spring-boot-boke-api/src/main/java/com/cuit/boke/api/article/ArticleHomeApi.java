@@ -43,6 +43,13 @@ public class ArticleHomeApi {
         return ResponseFactory.ok(articleService.list(articleDTO, null));
     }
 
+    @RequestMapping(value = "/labelList", method = RequestMethod.POST)
+    @ApiOperation(value = "标签列表", notes = "标签列表")
+    @SysControllerLog(description = "文章列表")
+    public ResponseVO labelList() throws BizException {
+        return ResponseFactory.ok(articleService.labelList());
+    }
+
     @RequestMapping(value = "/elasticsearch", method = RequestMethod.POST)
     @ApiOperation(value = "全文检索文章列表", notes = "文章列表")
     @SysControllerLog(description = "文章列表")

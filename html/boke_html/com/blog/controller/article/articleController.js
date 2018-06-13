@@ -18,6 +18,27 @@ blog.controller('articleController', function($rootScope, $scope, $http, $state,
         });
     }
 
+    $scope.init = function () {
+        $http.post($rootScope.baseUrl + "/api/0/home/article/labelList").success(function (result) {
+            if (result.status == 0) {
+                $scope.labelList = result.data;
+            }
+        });
+        var param = {
+            "pageNum": 1,
+            "pageSize": 5,
+            "status": 1,
+            "sorter": "a.read_count DESC"
+        };
+        $http.post($rootScope.baseUrl + "/api/0/home/article/list",JSON.stringify(param)).success(function (result) {
+            if (result.status == 0) {
+                $scope.hotArticles = result.data.data;
+            }
+        });
+    };
+    $scope.init();
+
+
 
     $scope.list = function () {
         if($scope.category.id === undefined) {

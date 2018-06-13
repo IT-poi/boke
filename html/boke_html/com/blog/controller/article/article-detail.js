@@ -57,6 +57,7 @@ blog.controller('articleDetailController', function($rootScope, $scope, $http, $
             content:content,
             userName: $scope.name,
             email:$scope.email,
+            portraitUrl:$scope.portraitUrl,
             parentId: id,
             articleId:$scope.articleId
         };
@@ -79,6 +80,7 @@ blog.controller('articleDetailController', function($rootScope, $scope, $http, $
      * 发表评论
      */
     $scope.submit = function (parentId) {
+        alert($scope.portraitUrl);
         if ($scope.name && $scope.email && $scope.message) {
             localStorage.userName = $scope.name;
             localStorage.email = $scope.email;
@@ -87,6 +89,7 @@ blog.controller('articleDetailController', function($rootScope, $scope, $http, $
                 content:$scope.message,
                 userName: $scope.name,
                 email:$scope.email,
+                portraitUrl:$scope.portraitUrl,
                 parentId:parentId,
                 articleId:$scope.articleId
             };

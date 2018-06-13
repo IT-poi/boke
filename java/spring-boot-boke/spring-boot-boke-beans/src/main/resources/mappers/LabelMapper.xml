@@ -58,6 +58,7 @@
     select id, `name`, article_count, create_by, create_at, update_by, update_at, delete_flag
     from label
     WHERE delete_flag = 0
+    ORDER BY article_count DESC
   </select>
 
   <select id="getByName" resultMap="BaseResultMap" parameterType="string" >

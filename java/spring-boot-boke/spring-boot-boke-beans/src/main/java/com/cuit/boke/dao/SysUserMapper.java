@@ -21,4 +21,6 @@ public interface SysUserMapper {
     SysUser getBy(LoginDTO loginDTO);
 
     SysUser getByUserName(String userName);
+
+    SysUser getOne();
 }

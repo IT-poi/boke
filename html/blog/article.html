@@ -59,7 +59,7 @@
                             <i class="fa fa-file-excel-o"></i> 私密 </a>
                         </li>
                         <li>
-                          <a href="javascript:;" ng-click="list(3)">
+                          <a href="javascript:;" ng-click="list(-1)">
                             <i class="fa fa-file-excel-o"></i> 回收站 </a>
                         </li>
                       </ul>
@@ -95,10 +95,12 @@
                   <td class="center"> {{x.reviewCount}} </td>
                   <td class="center"> {{x.createAt | date:'yyyy-MM-dd HH:mm:ss'}} </td>
                   <td class="center">
-                    <span class="label label-sm" style="padding-left: 10px; padding-right: 10px" ng-class="{0:'label-warning', 1:'label-success', 2:'label-info', 3:'label-danger'}[x.status]"> {{x.status | articleStatus}} </span>
+                    <span class="label label-sm" style="padding-left: 10px; padding-right: 10px" ng-class="{0:'label-warning', 1:'label-success', 2:'label-info', '-1':'label-danger'}[x.status]"> {{x.status | articleStatus}} </span>
                   </td>
                   <td class="center">
-                    <span class="center"><a href="#/article/{{x.id}}">修改</a></span> <span class="center"><a href="javascript:;">删除</a></span>
+                    <span ng-show="x.status != -1" class="center"><a href="#/article/{{x.id}}">修改</a></span>
+                    <span ng-show="x.status == -1" class="center"><a ng-click="recover(x.id)" href="javascript:;">恢复</a></span>
+                    <span class="center"><a ng-click="delete(x.id, x.status)" href="javascript:;">删除</a></span>
                   </td>
                 </tr>
                 </tbody>

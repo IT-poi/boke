@@ -14,7 +14,7 @@
         <div class="row">
             <div id="main-content" class="col-2-3">
                 <div class="wrap-content">
-                    <article>
+                    <article style="padding-bottom: 200px">
                         <div class="art-header">
                             <div class="entry-title">
                                 <a href="javascript:;">{{article.title}}</a>
@@ -26,10 +26,10 @@
                         <img src="{{article.picUrl}}"/>
                         <div class="art-content markdown-body" id="article_content"></div>
                     </article>
-                    <div style="margin-top: 60px;">
+                    <div style="margin-top: 10px;">
                         <div class="contact">
-                            <h3>发表评论</h3>
-                            <p> 电子邮件不会被公开，用于作者向你回复消息时，通过邮箱通知 </p>
+                            <h3 style="color:green;">发表评论</h3>
+                            <p>&nbsp;&nbsp;&nbsp;电子邮件不会被公开，用于作者向你回复消息时，通过邮箱通知 </p>
                             <div id="contact_form">
                                 <form name="form1" id="ff">
                                     <label class="row">
@@ -47,7 +47,7 @@
                                     <label class="row" style="text-align: center">
                                         <div class="col-full">
                                             <div class="wrap-col">
-                                                <input ng-model="website" type="text" name="website" id="website" placeholder="个人主页(非必填)" />
+                                                <input ng-model="portraitUrl" type="text" name="website" id="website" placeholder="个人主页(非必填)" />
                                             </div>
                                         </div>
                                     </label>
@@ -73,9 +73,9 @@
                             <div class="review">
                                 <div class="mess_title">
                                     <div class="mess_img ">
-                                        <img src="images/14.jpg">
+                                        <img src="http://193.112.112.136/images/14.jpg">
                                     </div>
-                                    <a href="https://{{x.portraitUrl}}" target="_blank"><span class="mess_name">{{x.userName}}</span></a>
+                                    <a href="{{x.portraitUrl}}" target="_blank"><span class="mess_name">{{x.userName}}</span></a>
                                     <span ng-show="x.parentId" style="color: #8590a6;"> 回复</span>
                                     <a ng-show="x.parentId" href="https://{{x.portraitUrl}}" target="_blank"><span class="mess_name">{{x.parentName}}</span></a>
                                     <span class="mess_time">评论于: {{x.createAt | date:"yyyy-MM-dd HH:mm:ss"}}</span>

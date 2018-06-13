@@ -3,16 +3,50 @@ function init(){
             "assets/pages/media/bg/1.jpg",
             "assets/pages/media/bg/2.jpg",
             "assets/pages/media/bg/3.jpg",
-            "assets/pages/media/bg/4.jpg",
-            "assets/pages/media/bg/8.jpg",
-            "assets/pages/media/bg/7.jpg"],
+            "assets/pages/media/bg/4.jpg"],
         {fade:1000,duration:10000})
 }
 init();
 function login() {
     var username = $("input[name='username']").val();
     var password = $("input[name='password']").val();
-    App.blockUI({boxed: !0});
+
+}
+
+function tijiao() {
+    var userName = $("input[name='fUserName']").val();
+    var email = $("input[name='fEmail']").val();
+    $.ajax({
+        type: "post",
+        url: 'http://193.112.112.136:8080/boke-core/api/0/admin/reset',
+        async: true, // 使用异步方式
+        // 1 需要使用JSON.stringify 否则格式为 a=2&b=3&now=14...
+        // 2 需要强制类型转换，否则格式为 {"a":"2","b":"3"}
+        data: JSON.stringify({
+            userName: userName,
+            email: email
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(data) {
+            App.unblockUI();
+            console.log(data);
+            if (data.status == 0) {
+                var mess = data.data;
+                $("#fAlertValue").html(mess);
+                $("#ftishi").removeClass("alert-danger");
+                $("#ftishi").show();
+            }else {
+                $("#fAlertValue").html(data.message);
+                $("#ftishi").addClass("alert-danger");
+                $("#ftishi").show();
+            }
+        }, // 注意不要在此行增加逗号
+        error: function (error) {
+            App.unblockUI();
+        }
+    });
+
 }
 // var UIBlockUI = function () {
 //     var o = function () {

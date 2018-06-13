@@ -4,6 +4,7 @@ import com.cuit.boke.api.category.dto.CategoryDTO;
 import com.cuit.boke.api.category.dto.CategoryUpdateDTO;
 import com.cuit.boke.api.category.service.CategoryService;
 import com.cuit.boke.constant.GwConstants;
+import com.cuit.boke.constant.UserConstants;
 import com.yinjk.web.core.enums.EApiStatus;
 import com.yinjk.web.core.exception.BizException;
 import com.yinjk.web.core.factory.ResponseFactory;
@@ -24,7 +25,7 @@ public class CategoryApi {
     private CategoryService categoryService;
 
     @RequestMapping(value = "add", method = {RequestMethod.POST})
-    @ApiOperation("获取用户的文章分类列表")
+    @ApiOperation("添加分类")
     public ResponseVO add(@RequestHeader(GwConstants.TRANSPARENT_USERID_FIELD) Integer userId,
                           @RequestBody @Valid CategoryDTO categoryDTO) throws BizException {
         categoryService.add(categoryDTO, userId);
@@ -32,10 +33,17 @@ public class CategoryApi {
     }
 
     @RequestMapping(value = "update", method = {RequestMethod.POST})
-    @ApiOperation("获取用户的文章分类列表")
+    @ApiOperation("修改分类")
     public ResponseVO update(@RequestHeader(GwConstants.TRANSPARENT_USERID_FIELD) Integer userId,
                           @RequestBody @Valid CategoryUpdateDTO categoryUpdateDTO) throws BizException {
         return categoryService.update(categoryUpdateDTO, userId) ? ResponseFactory.ok(EApiStatus.SUCCESS) : ResponseFactory.err("更新失败", EApiStatus.ERR_SYS);
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @ApiOperation(value = "删除分类", notes = "删除分类")
+    public ResponseVO delete(@PathVariable("id") Integer id,
+                             @RequestHeader(UserConstants.USER_USERID_FEILD) Integer userId) throws BizException {
+        return categoryService.delete(id, userId) == 1 ? ResponseFactory.ok(EApiStatus.SUCCESS) : ResponseFactory.err("", EApiStatus.ERR_SYS);
     }
 
     @RequestMapping(value = "/list", method = {RequestMethod.POST})

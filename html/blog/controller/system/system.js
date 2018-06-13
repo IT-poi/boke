@@ -12,13 +12,18 @@ blog.controller('systemController', function($rootScope, $scope, $http) {
         }
     });
     $http.get($rootScope.baseUrl + "/api/1/user/login/status").success(function (response) {
-        console.log(response);
         if(response.status == 0){
             $scope.loginStatus = response.data;
         }
     });
-    var token = localStorage.getItem("token");
-    console.log(token);
+    $http.post($rootScope.baseUrl + "/api/1/manage/article/statistics").success(function (response) {
+        if(response.status == 0){
+            $scope.statistics = response.data;
+            $('#as').attr("data-value", "100");
+            console.log($scope.statistics);
+        }
+    });
+
    /* $http({
         method:"GET",
         url:"http://localhost:8080/boke-core/api/1/system/time",

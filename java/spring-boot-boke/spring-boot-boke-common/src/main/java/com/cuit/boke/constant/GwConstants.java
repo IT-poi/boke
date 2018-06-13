@@ -14,4 +14,6 @@ public interface GwConstants {
     /** 失效token **/
     String REDIS_USER_TOKEN_LOGOUT_KEY = "logoutTokens";
 
+    String REDIS_RESET_TIME = "resetTime";
+
 }

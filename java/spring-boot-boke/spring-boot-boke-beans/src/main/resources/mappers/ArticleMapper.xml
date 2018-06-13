@@ -114,6 +114,17 @@
     from article
     WHERE delete_flag = 0
   </select>
+  <select id="count" resultType="int" >
+    select count(*)
+    from article
+    WHERE delete_flag = 0
+  </select>
+
+  <select id="readCount" resultType="int" >
+    select IFNULL(sum(read_count), 0)
+    from article
+    WHERE delete_flag = 0
+  </select>
   <select id="listBy" resultMap="BaseResultMap" parameterType="map">
     select
       id,
@@ -143,6 +154,7 @@
       <if test="top != null">and top = #{top}</if>
       <if test="title != null">and title = #{title}</if>
       <if test="author != null">and author = #{author}</if>
+      <if test="categoryId != null">and category_id = #{categoryId}</if>
       <if test="brief != null">and brief = #{brief}</if>
       <if test="picUrl != null">and pic_url = #{picUrl}</if>
       <if test="praiseCount != null">and praise_count = #{praiseCount}</if>
@@ -182,6 +194,7 @@
       <if test="id != null">and a.id = #{id}</if>
       <if test="type != null">and a.type = #{type}</if>
       <if test="status != null">and  a.`status` = #{status}</if>
+      <if test="status == null">and  <![CDATA[ a.`status` >= 0 ]]></if>
       <if test="top != null">and a.top = #{top}</if>
       <if test="categoryId != null">and a.category_id = #{categoryId}</if>
       <if test="alias != null">and c.alias = #{alias}</if>

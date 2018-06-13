@@ -2,10 +2,14 @@ package com.cuit.boke.api.category.service;
 
 import com.cuit.boke.api.category.dto.CategoryDTO;
 import com.cuit.boke.api.category.dto.CategoryUpdateDTO;
+import com.cuit.boke.article.beans.entry.Article;
 import com.cuit.boke.article.beans.entry.Category;
+import com.cuit.boke.article.dao.ArticleMapper;
 import com.cuit.boke.article.dao.CategoryMapper;
 import com.google.common.collect.Maps;
 import com.yinjk.web.core.exception.BizException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +23,14 @@ import java.util.Objects;
 @Service
 public class CategoryService {
 
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
+
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @Autowired
+    private ArticleMapper articleMapper;
 
     /**
      * 获取用户的分类列表
@@ -107,6 +116,24 @@ public class CategoryService {
         category.setUpdateBy(userId);
         category.setUpdateAt(LocalDateTime.now());
         return categoryMapper.updateByPrimaryKey(category) == 1;
+    }
+
+    /**
+     * 删除分类
+     * @param categoryId 分类ID
+     * @param userId 操作用户ID
+     * @return
+     * @throws BizException
+     */
+    public int delete(Integer categoryId, Integer userId) throws BizException {
+        Map<String, Object> paramMap = Maps.newHashMap();
+        paramMap.put("categoryId", categoryId);
+        List<Article> articles = articleMapper.listBy(paramMap);
+        if (!CollectionUtils.isEmpty(articles)) { //分类下有文章不能删除
+            LOGGER.error("分类下有文章，不能删除！");
+            throw new BizException("该分类下存在文章，不能删除该分类！");
+        }
+        return categoryMapper.deleteByPrimaryKey(categoryId);
     }
 
     /**

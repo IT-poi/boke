@@ -59,12 +59,26 @@ public class ArticleApi {
         return ResponseFactory.ok(articleService.update(dto , userId));
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     @ApiOperation(value = "删除文章", notes = "删除文章")
     @SysControllerLog(description = "删除文章")
-    public ResponseVO delete(@RequestParam("id") Integer id,
+    public ResponseVO delete(@PathVariable("id") Integer id,
                              @RequestHeader(UserConstants.USER_USERID_FEILD) Integer userId) throws BizException {
         return articleService.delete(id, userId) == 1 ? ResponseFactory.ok(EApiStatus.SUCCESS) : ResponseFactory.err("", EApiStatus.ERR_SYS);
+    }
+
+    @RequestMapping(value = "/recycle/{id}", method = RequestMethod.POST)
+    @ApiOperation(value = "放入回收站", notes = "放入回收站")
+    public ResponseVO recycle(@PathVariable("id") Integer id,
+                             @RequestHeader(UserConstants.USER_USERID_FEILD) Integer userId) throws BizException {
+        return articleService.recycle(id, userId) == 1 ? ResponseFactory.ok(EApiStatus.SUCCESS) : ResponseFactory.err("", EApiStatus.ERR_SYS);
+    }
+
+    @RequestMapping(value = "/recover/{id}", method = RequestMethod.POST)
+    @ApiOperation(value = "恢复为草稿", notes = "恢复为草稿")
+    public ResponseVO recover(@PathVariable("id") Integer id,
+                              @RequestHeader(UserConstants.USER_USERID_FEILD) Integer userId) throws BizException {
+        return articleService.recover(id, userId) == 1 ? ResponseFactory.ok(EApiStatus.SUCCESS) : ResponseFactory.err("", EApiStatus.ERR_SYS);
     }
 
     @RequestMapping(value = "/uploadPic", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
@@ -72,7 +86,13 @@ public class ArticleApi {
     public ResponseVO uploadTemplate(HttpServletRequest request,
                                      @RequestParam(required = false) Integer articleId,
                                      @RequestHeader(UserConstants.USER_USERID_FEILD) Integer userId) throws BizException {
-        System.out.println(articleId);
         return ResponseFactory.ok(articleService.uploadTitlePic(request, articleId, userId));
     }
+
+    @RequestMapping(value = "/statistics", method = RequestMethod.POST)
+    @ApiOperation(value = "数量统计", notes = "数量统计")
+    public ResponseVO statistics(@RequestHeader(UserConstants.USER_USERID_FEILD) Integer userId) throws BizException {
+        return ResponseFactory.ok(articleService.statistics(userId));
+    }
+
 }

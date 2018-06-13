@@ -72,24 +72,27 @@ public class ReviewService {
         Integer articleId = review.getArticleId();
         Article article = articleMapper.selectByPrimaryKey(articleId);
         if (!Objects.isNull(parentId)) { //通知评论的人
-            Review parentReivew = reviewMapper.selectByPrimaryKey(parentId);
-            String mailContext = "您好：" + parentReivew.getUserName() + "！\n" +
+            Review parentReview = reviewMapper.selectByPrimaryKey(parentId);
+            String mailContext = "您好：" + parentReview.getUserName() + "！<br>" +
                     "您在：<a href=\"http://193.112.112.136/\">Fool的个人博客</a>网站中对文章" +
                     "<a href=\"http://193.112.112.136/#/article/" + articleId + "\">" + article.getTitle() + "</a>的评论：" +
-                    parentReivew.getContent() + "有了回复！\n" +
-                    "回复内容是：\n" + review.getContent();
+                    parentReview.getContent() + "<label style='color:green'>有了回复！</label><br>" +
+                    "回复内容是：<br>" + review.getContent();
             try {
-                mailService.sendMail(parentReivew.getEmail(), "您在Fool个人博客的评论有了新回复", mailContext);
+                mailService.sendMail(parentReview.getEmail(), "您在Fool个人博客的评论有了新回复", mailContext);
             } catch (BizException e) {
                 LOGGER.error(e.getMsg(), e);
             }
         }
         //通知博主
-        SysUser userInfo = sysUserService.getUserInfo(userId == null ? 1 : userId);
-        String mailContext = "你好：" + userInfo.getUserNickName() + "！\n" +
-                "您的文章：<a href=\"http://193.112.112.136/#/article/"+articleId+"\">" + article.getTitle() + "</a>下面有了新评论。\n" +
-                "评论内容是：\n" + review.getContent();
+        SysUser userInfo = sysUserService.getUserInfo(1);
+        if (Objects.isNull(userInfo)) {
+            userInfo = sysUserService.getOne();
+        }
         try {
+            String mailContext = "你好：" + userInfo.getUserNickName() + "！<br>" +
+                "您的文章：<a href=\"http://193.112.112.136/#/article/"+articleId+"\">" + article.getTitle() + "</a>下面有了新评论。<br>" +
+                "评论内容是：<br>" + review.getContent();
             mailService.sendMail(userInfo.getEmail(), "Fool个人博客有人评论了你", mailContext);
         } catch (BizException e) {
             LOGGER.error(e.getMsg(), e);

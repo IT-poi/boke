@@ -48,6 +48,8 @@ public class ContactService {
         //过滤敏感词
         content = sensitiveWordFilter.replaceSensitiveWord(content, SensitiveWordFilter.maxMatchType, "*");
         contact.setContent(content);
+        contact.setReplay(0);
+        contact.setIgnore(0);
         return contactMapper.insert(contact) == 1;
     }
 
@@ -85,9 +87,9 @@ public class ContactService {
         Contact contact = contactMapper.selectByPrimaryKey(contactId);
         String email = contact.getEmail();
         //发邮件
-        String mailContext = "您好：" + contact.getName() + "！\n" +
-                "您在：<a href=\"http://193.112.112.136/\">Fool的个人博客</a>网站中给博主的留言有了回复！" +
-                "回复内容是：\n" + contactReplayDTO.getReplayContext();
+        String mailContext = "您好：" + contact.getName() + "！<br>" +
+                "您在：<a href=\"http://193.112.112.136/\">Fool的个人博客</a>网站中给博主的留言有了回复！<br>" +
+                "回复内容是：<br>" + contactReplayDTO.getReplayContext();
         mailService.sendMail(email, contact.getSubject(), mailContext);
         Contact contact1 = new Contact();
         contact1.setId(contactId);

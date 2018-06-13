@@ -17,4 +17,6 @@ public interface ContactMapper {
 
     List<Contact> findBy(Map<String, Object> map);
 
+    Integer count();
+
 }

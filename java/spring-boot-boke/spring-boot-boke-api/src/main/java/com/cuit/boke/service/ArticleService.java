@@ -10,6 +10,7 @@ import com.cuit.boke.article.beans.entry.ArticleLabel;
 import com.cuit.boke.article.beans.entry.Category;
 import com.cuit.boke.article.dao.ArticleLabelMapper;
 import com.cuit.boke.article.dao.CategoryMapper;
+import com.cuit.boke.contact.dao.ContactMapper;
 import com.cuit.boke.es.repository.EsArticleRepository;
 import com.cuit.boke.es.service.EsArticleService;
 import com.cuit.boke.label.beans.entry.Label;
@@ -18,6 +19,7 @@ import com.cuit.boke.article.dao.ArticleMapper;
 import com.cuit.boke.label.dao.LabelMapper;
 import com.cuit.boke.dao.SysUserMapper;
 import com.cuit.boke.enums.article.ArticleStatusEnum;
+import com.cuit.boke.review.dao.ReviewMapper;
 import com.cuit.boke.utils.TransformUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -66,6 +68,12 @@ public class ArticleService {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private ReviewMapper reviewMapper;
+
+    @Autowired
+    private ContactMapper contactMapper;
+
 
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleService.class);
@@ -93,7 +101,9 @@ public class ArticleService {
             throw new BizException(msg);
         }
         Category category = categoryMapper.selectByPrimaryKey(article.getCategoryId());
-        article.setCategoryName(category.getName());
+        if (!Objects.isNull(category)) {
+            article.setCategoryName(category.getName());
+        }
         esArticleService.saveArticle(article);
         return article;
     }
@@ -160,13 +170,7 @@ public class ArticleService {
         labelNames.removeIf(intersection::contains);
 
         //先删除需要删除的标签
-        for (Map<String, Object> articleLabel : articleLabels) {
-            Integer labelId = castTo(articleLabel.get("labelId"), Integer.class);
-            Integer articleLabelId = castTo(articleLabel.get("id"), Integer.class);
-            //更新标签下的文章数量减一
-            labelMapper.minusArticle(labelId);
-            articleLabelMapper.deleteByPrimaryKey(articleLabelId);
-        }
+        deleteLabel(articleLabels);
         //添加需要添加的标签
         for (String labelName : labelNames) {
             Label label = labelMapper.getByName(labelName);
@@ -213,6 +217,10 @@ public class ArticleService {
         return new PageVO<>(page);
     }
 
+    public List<Label> labelList() {
+        return labelMapper.selectAll();
+    }
+
     /**
      * 修改文章内容
      *
@@ -231,24 +239,89 @@ public class ArticleService {
             LOGGER.error(msg);
             throw new BizException(msg);
         }
+        Category category = categoryMapper.selectByPrimaryKey(article.getCategoryId());
+        article.setCategoryName(category.getName());
+        esArticleService.saveArticle(article);
         return article;
     }
 
     /**
      * 删除文章
      *
-     * @param id id
-     * @param userId 用户id
+     * @param articleId 文章id
+     * @param userId    用户id
      * @return
      */
-    public int delete(Integer id, Integer userId) throws BizException {
-        Article article = getById(id);
+    @Transactional(rollbackFor = Exception.class)
+    public int delete(Integer articleId, Integer userId) throws BizException {
+        Article article = getById(articleId);
         if (Objects.equals(article.getCreateBy(), userId)) { //有权限
-            return articleMapper.deleteByPrimaryKey(id);
+            Map<String, Object> paramMap = Maps.newHashMap();
+            paramMap.put("articleId", articleId);
+            //删除文章的标签
+            List<Map<String, Object>> articleLabels = articleLabelMapper.listByWithLabel(paramMap);
+            deleteLabel(articleLabels);
+            //删除评论
+            reviewMapper.deleteByArticle(articleId);
+            //删除文章在es中的索引
+            esArticleService.deleteById(articleId);
+            //删除文章
+            return articleMapper.deleteByPrimaryKey(articleId);
         } else {
             String msg = EApiStatus.ERR_PERMISSION.getMessage();
             LOGGER.error(msg);
             throw new BizException(msg);
+        }
+    }
+
+    public int recycle(Integer articleId, Integer userId) throws BizException {
+        Article article = getById(articleId);
+        if (Objects.equals(article.getCreateBy(), userId)) { //有权限
+            Article articleUpdate = new Article();
+            articleUpdate.setId(articleId);
+            articleUpdate.setUpdateBy(userId);
+            articleUpdate.setUpdateAt(new Date());
+            articleUpdate.setStatus(ArticleStatusEnum.RECYCLE_BIN.getKey());
+            //删除文章在es中的索引
+            esArticleService.deleteById(articleId);
+            //放入回收站
+            return articleMapper.updateByPrimaryKey(articleUpdate);
+        } else {
+            String msg = EApiStatus.ERR_PERMISSION.getMessage();
+            LOGGER.error(msg);
+            throw new BizException(msg);
+        }
+    }
+
+    public int recover(Integer articleId, Integer userId) throws BizException {
+        Article article = getById(articleId);
+        if (Objects.equals(article.getCreateBy(), userId)) { //有权限
+            Article articleUpdate = new Article();
+            articleUpdate.setId(articleId);
+            articleUpdate.setUpdateBy(userId);
+            articleUpdate.setUpdateAt(new Date());
+            articleUpdate.setStatus(ArticleStatusEnum.DRAFT.getKey());
+            //恢复为草稿
+            return articleMapper.updateByPrimaryKey(articleUpdate);
+        } else {
+            String msg = EApiStatus.ERR_PERMISSION.getMessage();
+            LOGGER.error(msg);
+            throw new BizException(msg);
+        }
+    }
+
+    /**
+     * 删除文章标签
+     *
+     * @param articleLabels 文章标签集合
+     */
+    public void deleteLabel(List<Map<String, Object>> articleLabels){
+        for (Map<String, Object> articleLabel : articleLabels) {
+            Integer labelId = castTo(articleLabel.get("labelId"), Integer.class);
+            Integer articleLabelId = castTo(articleLabel.get("id"), Integer.class);
+            //更新标签下的文章数量减一
+            labelMapper.minusArticle(labelId);
+            articleLabelMapper.deleteByPrimaryKey(articleLabelId);
         }
     }
 
@@ -302,5 +375,18 @@ public class ArticleService {
             articleMapper.updateByPrimaryKey(article);
         }
         return url;
+    }
+
+    public Map<String, Integer> statistics(Integer userId) {
+        Map<String, Integer> result = Maps.newHashMap();
+        Integer articleCount = articleMapper.count();
+        Integer reviewCount = reviewMapper.count();
+        Integer contactCount = contactMapper.count();
+        Integer readCount = articleMapper.readCount();
+        result.put("articleCount", articleCount);
+        result.put("reviewCount", reviewCount);
+        result.put("contactCount", contactCount);
+        result.put("readCount", readCount);
+        return result;
     }
 }

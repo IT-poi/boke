@@ -10,12 +10,23 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
+import java.util.concurrent.*;
 
 @Service
 public class MailService {
 
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(MailService.class);
+
+    private static ExecutorService executorService = Executors.newSingleThreadExecutor();
+    /**
+     *   new ThreadPoolExecutor(
+         1,
+         10,
+         5,
+         TimeUnit.SECONDS,
+         new LinkedBlockingQueue<>(10));
+     */
 
     @Autowired
     private JavaMailSender mailSender;
@@ -30,18 +41,20 @@ public class MailService {
      * @throws BizException
      */
     public void sendMail(String toMail, String subject, String text) throws BizException {
-        try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-            helper.setFrom(mailProperties.getUsername());
-            helper.setTo(toMail);//发送给谁
-            helper.setSubject(subject);//邮件标题
-            helper.setText(text, true);
-            mailSender.send(mimeMessage);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new BizException("发送邮件失败");
-        }
+        executorService.execute(()->{
+            try {
+                MimeMessage mimeMessage = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+                helper.setFrom(mailProperties.getUsername());
+                helper.setTo(toMail);//发送给谁
+                helper.setSubject(subject);//邮件标题
+                helper.setText(text, true);
+                mailSender.send(mimeMessage);
+            } catch (Exception e) {
+                LOGGER.error("发送邮件失败！");
+                LOGGER.error(e.getMessage(), e);
+                return;
+            }
+        });
     }
-
 }

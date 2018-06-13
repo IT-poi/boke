@@ -53,10 +53,10 @@ public class AccessFilter extends ZuulFilter {
     @Override
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
-        HttpServletRequest request = ctx.getRequest();
+        HttpServletRequest request = ctx.getRequest(); //拿到request
         try{
-            String accessToken = request.getHeader(GwConstants.REQ_AUTH_HEAD_FIELD);
-            if (RedisTools.siscontains(GwConstants.REDIS_USER_TOKEN_LOGOUT_KEY, accessToken)) {
+            String accessToken = request.getHeader(GwConstants.REQ_AUTH_HEAD_FIELD); //取得authorization请求头
+            if (RedisTools.siscontains(GwConstants.REDIS_USER_TOKEN_LOGOUT_KEY, accessToken)) { //如果token在黑名单中
                 this.returnError(ctx, "您已注销，请重新登陆!");
                 return null;
             }
@@ -64,11 +64,11 @@ public class AccessFilter extends ZuulFilter {
                 Map jwtBody =getJwtBody(accessToken);
                 if (jwtBody != null) {
                     Object userId = jwtBody.get(GwConstants.JWT_USER_ID_FIELD);
-                    if (userId != null) {
+                    if (userId != null) { //token认证成功
                         ctx.addZuulRequestHeader(GwConstants.TRANSPARENT_USERID_FIELD, String.valueOf(userId));
                         ctx.addZuulRequestHeader(GwConstants.TRANSPARENT_TOKEN_FIELD, accessToken);
                         return null;
-                    } else {
+                    } else { //token认证失败
                         this.returnError(ctx, "token parser error");
                         return null;
                     }

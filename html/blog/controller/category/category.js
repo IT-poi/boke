@@ -24,6 +24,19 @@ blog.controller('categoryController', function($rootScope, $scope, $http, $state
         $state.go("category.detail",{"readonly":true, "alias":alias});
     };
 
+    /**
+     * 删除分类
+     *
+     * @param categoryId
+     */
+    $scope.delete = function (categoryId) {
+        $http.post($rootScope.baseUrl + "/api/1/article/category/delete/"+categoryId).success(function (result) {
+            if (result.status == 0) {
+                init();
+            }
+        });
+    };
+
     function init () {
         $http.post($rootScope.baseUrl + "/api/1/article/category/list").success(function (result) {
             console.log(result);

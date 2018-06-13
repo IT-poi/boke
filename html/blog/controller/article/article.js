@@ -22,6 +22,31 @@ blog.controller('articleController', function($rootScope, $scope, $http, $state)
         });
     };
 
+    $scope.delete = function (articleId, status) {
+        if (status == -1) { //回收站的直接删除
+            $http.post($rootScope.baseUrl + "/api/1/manage/article/delete/"+articleId).success(function (result) {
+                if (result.status == 0) {
+                    $scope.articleConfig.onChange();
+                }
+            });
+        }else { //其他地方的放入回收站
+            $http.post($rootScope.baseUrl + "/api/1/manage/article/recycle/"+articleId).success(function (result) {
+                if (result.status == 0) {
+                    $scope.articleConfig.onChange();
+                }
+            });
+        }
+    };
+
+    //恢复文章为草稿
+    $scope.recover = function (articleId) {
+        $http.post($rootScope.baseUrl + "/api/1/manage/article/recover/"+articleId).success(function (result) {
+            if (result.status == 0) {
+                $scope.articleConfig.onChange();
+            }
+        });
+    };
+
     $scope.articleConfig = {
         align: "right",
         currentPage: 1,

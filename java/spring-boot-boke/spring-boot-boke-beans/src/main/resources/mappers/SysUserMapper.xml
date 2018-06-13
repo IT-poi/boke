@@ -72,6 +72,14 @@
     from sys_user
     where delete_flag = 0 and id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getOne" resultMap="BaseResultMap" >
+    select id, user_name, user_nick_name, user_full_name, sex, age, user_pwd, email,
+    phone, address, signature, user_state, role_ids, create_by, create_at, update_by,
+    update_at, delete_flag
+    from sys_user
+    where delete_flag = 0
+    LIMIT 1
+  </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, user_name, user_nick_name, user_full_name, sex, age, user_pwd, email, 
     phone, address, signature, user_state, role_ids, create_by, create_at, update_by, 

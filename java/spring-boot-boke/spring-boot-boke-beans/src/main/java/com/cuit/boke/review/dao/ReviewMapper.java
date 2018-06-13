@@ -17,4 +17,8 @@ public interface ReviewMapper {
 
     List<Review> findBy(Map<String, Object> map);
 
+    Integer count();
+
+    int deleteByArticle(Integer articleId);
+
 }

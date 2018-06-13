@@ -2,9 +2,11 @@ package com.cuit.boke.api.admin;
 
 import com.cuit.boke.aop.annotation.SysControllerLog;
 import com.cuit.boke.aop.annotation.SysLoginLog;
+import com.cuit.boke.api.admin.dto.ResetDTO;
 import com.cuit.boke.api.permission.service.AdminService;
 import com.cuit.boke.api.permission.service.SysUserService;
 import com.cuit.boke.constant.GwConstants;
+import com.yinjk.web.core.enums.EApiStatus;
 import com.yinjk.web.core.exception.BizException;
 import com.yinjk.web.core.factory.ResponseFactory;
 import com.yinjk.web.core.jwt.beans.dto.LoginDTO;
@@ -44,6 +46,12 @@ public class AdminApi {
     @ApiOperation("用户信息")
     public ResponseVO info(@PathVariable("userName") String userName) {
         return ResponseFactory.ok(adminService.info(userName));
+    }
+
+    @RequestMapping(value = "/reset", method = RequestMethod.POST)
+    @ApiOperation("重置密码")
+    public ResponseVO reset(@RequestBody @Valid ResetDTO resetDTO) throws BizException {
+        return ResponseFactory.ok(adminService.reset(resetDTO));
     }
 
 }

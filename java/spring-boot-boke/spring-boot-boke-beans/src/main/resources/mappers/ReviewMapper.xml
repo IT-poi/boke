@@ -27,6 +27,11 @@
     SET delete_flag = 1
     WHERE id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="deleteByArticle" parameterType="java.lang.Integer" >
+    UPDATE review
+    SET delete_flag = 1
+    WHERE article_id = #{articleId,jdbcType=INTEGER}
+  </update>
   <insert id="insert" parameterType="com.cuit.boke.review.beans.entry.Review" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
@@ -77,6 +82,12 @@
     select id, content, user_id, user_name, email, portrait_url, `floor`, praise_count, 
     article_id, parent_id, create_by, create_user_name, create_at, update_by, update_user_name, 
     update_at, delete_flag
+    from review
+    WHERE delete_flag = 0
+  </select>
+
+  <select id="count" resultType="int" >
+    select count(*)
     from review
     WHERE delete_flag = 0
   </select>
